@@ -505,7 +505,7 @@ export default function ApprovalCenterPage() {
           { icon: AlertTriangle,label: 'Overdue',         value: kpis.overdue,       color: 'text-red-600', bg: 'bg-red-50', ring: kpis.overdue > 0 },
           { icon: Zap,         label: 'Avg Wait Time',   value: `${kpis.avgHrs}h`,  color: 'text-blue-600', bg: 'bg-blue-50' },
         ].map(({ icon: Icon, label, value, color, bg, ring }) => (
-          <Card key={label} className={cn(', ring ? 'ring-1 ring-amber-200' : '')}>
+          <Card key={label} className={cn(ring ? 'ring-1 ring-amber-200' : '')}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>

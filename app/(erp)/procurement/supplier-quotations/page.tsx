@@ -370,7 +370,7 @@ export default function SupplierQuotationsPage() {
           { icon: CheckCircle, label: 'Awarded',         value: kpis.awarded,   cls: 'text-emerald-600', bg: 'bg-emerald-50' },
           { icon: Star,        label: 'Avg Savings',     value: '8.2%',         cls: 'text-purple-600',  bg: 'bg-purple-50' },
         ].map(({ icon: Icon, label, value, cls, bg, ring }) => (
-          <Card key={label} className={cn(', ring ? 'ring-1 ring-amber-200' : '')}>
+          <Card key={label} className={cn(ring ? 'ring-1 ring-amber-200' : '')}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>

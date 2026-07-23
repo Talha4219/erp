@@ -202,7 +202,7 @@ export default function ProcurementPage() {
         <Link href="/procurement/approval-center">
           <div className={cn(
             'group flex flex-col rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-all h-full',
-            (d?.pendingApprovals ?? 0) > 0 ? 'border-amber-200 ring-1 ring-amber-100' : ,
+            (d?.pendingApprovals ?? 0) > 0 ? 'border-amber-200 ring-1 ring-amber-100' : '',
           )}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Approvals</span>
@@ -250,7 +250,7 @@ export default function ProcurementPage() {
         <Link href="/procurement/goods-receipt">
           <div className={cn(
             'group flex flex-col rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-all h-full',
-            (d?.overdueDeliveries ?? 0) > 0 ? 'border-red-200' : ,
+            (d?.overdueDeliveries ?? 0) > 0 ? 'border-red-200' : '',
           )}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Deliveries</span>
@@ -270,7 +270,7 @@ export default function ProcurementPage() {
         <Link href="/procurement/purchase-invoices">
           <div className={cn(
             'group flex flex-col rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-all h-full',
-            (d?.totalUnpaid ?? 0) > 0 ? 'border-red-200' : ,
+            (d?.totalUnpaid ?? 0) > 0 ? 'border-red-200' : '',
           )}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Supplier Bills</span>

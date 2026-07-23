@@ -422,7 +422,7 @@ function RFQsPageContent() {
           { icon: CheckCircle,   label: 'Responses Received',  value: kpis.responses, cls: 'text-emerald-600', bg: 'bg-emerald-50' },
           { icon: AlertTriangle, label: 'Overdue RFQs',        value: kpis.overdue,   cls: 'text-red-600',     bg: 'bg-red-50',     ring: kpis.overdue > 0 },
         ].map(({ icon: Icon, label, value, cls, bg, ring }) => (
-          <Card key={label} className={cn(', ring ? 'ring-1 ring-amber-200' : '')}>
+          <Card key={label} className={cn(ring ? 'ring-1 ring-amber-200' : '')}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>

@@ -446,7 +446,7 @@ export function PageClient({ initialData }: { initialData: PR[] }) {
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {[ { label: 'Total PRs', value: kpis.total, icon: ClipboardList, color: 'text-purple-600', bg: 'bg-purple-50' }, { label: 'Pending Approval', value: kpis.pending, icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50', highlight: kpis.pending > 0 }, { label: 'Approved', value: kpis.approved, icon: CheckSquare, color: 'text-emerald-600', bg: 'bg-emerald-50' }, { label: 'Drafts', value: kpis.draft, icon: AlertCircle, color: 'text-gray-500', bg: 'bg-gray-50' }, { label: 'Total Value', value: formatCurrency(kpis.totalValue), icon: TrendingUp, color: 'text-blue-600', bg: 'bg-blue-50' }, ].map(({ label, value, icon: Icon, color, bg, highlight }) => (
-          <Card key={label} className={cn(', highlight ? 'ring-1 ring-amber-200' : '')}>
+          <Card key={label} className={cn(highlight ? 'ring-1 ring-amber-200' : '')}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
