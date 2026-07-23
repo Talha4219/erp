@@ -39,6 +39,9 @@ evn
 # vercel
 .vercel
 
+# seed — replaced by prisma/seed/ directory
+/prisma/seed.ts
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
