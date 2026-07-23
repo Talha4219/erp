@@ -1,0 +1,34 @@
+# deps & build output (reinstalled/rebuilt inside the image)
+node_modules
+.next
+out
+build
+coverage
+
+# env & secrets — never bake into the image; supplied at runtime
+.env
+.env.*
+!.env.example
+!.env.docker.example
+
+# vcs & tooling
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# local/dev artifacts
+Dockerfile
+.dockerignore
+docker-compose.yml
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+.DS_Store
+
+# docs & tests not needed for the runtime build
+README.md
+**/*.test.ts
+**/*.test.tsx
