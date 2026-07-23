@@ -89,7 +89,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://erp:erp_test@localhost:5432/erp_test
       - name: Run integration tests
-        run: npm test -- --testPathPatterns=tests/integration
+        run: npm run test:integration
         env:
           DATABASE_URL: postgresql://erp:erp_test@localhost:5432/erp_test
           NEXTAUTH_SECRET: test-secret-for-ci
