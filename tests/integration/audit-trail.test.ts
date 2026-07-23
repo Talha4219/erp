@@ -32,6 +32,18 @@ beforeAll(async () => {
   if (!TEST_DB_AVAILABLE || !prisma) return
   await prisma.$connect()
 
+  await prisma.user.upsert({
+    where: { id: 'test-user-id' },
+    update: {},
+    create: {
+      id: 'test-user-id',
+      email: 'test-audit-user@integration.test',
+      password: 'hashedpassword',
+      name: 'Test Audit User',
+      role: 'ADMIN',
+    },
+  })
+
   const customer = await prisma.customer.create({
     data: {
       customerCode: `AUDIT-TEST-${Date.now()}`,

@@ -36,8 +36,13 @@ export const POST = withAuth(async (req: NextRequest, { session }) => {
       : []
     const validIdSet = new Set(existingPoItems.map(p => p.id))
     const safeLines = rawLines.map(l => ({
-      ...l,
       poLineItemId: l.poLineItemId && validIdSet.has(l.poLineItemId) ? l.poLineItemId : undefined,
+      itemId: l.itemId,
+      receivedQty: l.receivedQty,
+      acceptedQty: l.acceptedQty,
+      rejectedQty: l.rejectedQty,
+      unitPrice: l.unitPrice,
+      warehouseId: l.warehouseId,
     }))
 
     const grn = await prisma.$transaction(async (tx) => {

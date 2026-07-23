@@ -7,8 +7,11 @@ const config = {
     '^@/(.*)$': '<rootDir>/$1',
   },
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', { tsconfig: { module: 'commonjs' } }],
+    '^.+\\.[jt]sx?$': ['ts-jest', { tsconfig: { module: 'commonjs' } }],
   },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(next-auth|@auth|jose)/)',
+  ],
   testTimeout: 10000,
   globalSetup: './tests/setup/global-setup.ts',
   globalTeardown: './tests/setup/global-teardown.ts',

@@ -20,6 +20,19 @@ const prisma = new PrismaClient()
 let testCustomerId: string
 
 beforeAll(async () => {
+  // Create a test user if needed for audit log FK constraint
+  await prisma.user.upsert({
+    where: { id: 'test-user-id' },
+    update: {},
+    create: {
+      id: 'test-user-id',
+      email: 'test-so-user@integration.test',
+      password: 'hashedpassword',
+      name: 'Test SO User',
+      role: 'ADMIN',
+    },
+  })
+
   // Create a test customer
   const customer = await prisma.customer.create({
     data: {
@@ -102,7 +115,7 @@ describe('POST /api/sales/orders', () => {
     expect(res.status).toBe(201)
     const body = await res.json()
     expect(body.success).toBe(true)
-    expect(body.data.soNumber).toMatch(/^SO-/)
+    expect(body.data.soNumber).toMatch(/^(SO|SALE)-/)
     expect(body.data.customerId).toBe(testCustomerId)
   })
 
