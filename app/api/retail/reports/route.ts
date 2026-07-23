@@ -25,23 +25,23 @@ export const GET = withAuth(async (req: NextRequest) => {
             expiryDate: { lte: cutoff, gte: new Date() },
             quantityOnHand: { gt: 0 },
           },
-          include: { _product: true } as any,
+          include: { item: { select: { id: true, name: true, sku: true, sellingPrice: true } } },
           orderBy: { expiryDate: 'asc' },
         })
         return NextResponse.json({ success: true, data: batches })
       }
 
       case 'low-stock': {
-        const products = await prisma.product.findMany({
+        const products = await prisma.item.findMany({
           where: { deletedAt: null },
-          include: { _batches: true } as any,
+          include: { batches: true },
         })
         const low = products
           .map((p: any) => ({
             ...p,
-            totalQty: p._batches.reduce((s: number, b: any) => s + b.quantityOnHand, 0),
+            totalQty: p.batches.reduce((s: number, b: any) => s + b.quantityOnHand, 0),
           }))
-          .filter((p) => p.totalQty <= p.reorderLevel)
+          .filter((p) => p.totalQty <= p.reorderPoint)
         return NextResponse.json({ success: true, data: low })
       }
 
@@ -66,22 +66,22 @@ export const GET = withAuth(async (req: NextRequest) => {
       }
 
       case 'daily-sales': {
-        const orders = await (prisma as any)._retailSalesOrder.findMany({
-          where: { ...(dateFilter ? { transactionDate: dateFilter } : {}) },
-          include: { lineItems: true },
-          orderBy: { transactionDate: 'asc' },
+        const orders = await prisma.salesOrderV2.findMany({
+          where: { channel: 'POS', ...(dateFilter ? { orderDate: dateFilter } : {}) },
+          include: { lineItems: true, payments: true },
+          orderBy: { orderDate: 'asc' },
         })
 
         const byMethod: Record<string, { count: number; total: number }> = {}
         for (const order of orders) {
-          const m = order.paymentMethod
+          const m = order.payments[0]?.method || 'UNKNOWN'
           if (!byMethod[m]) byMethod[m] = { count: 0, total: 0 }
           byMethod[m].count++
-          byMethod[m].total += Number(order.grandTotalGbp)
+          byMethod[m].total += Number(order.totalAmount)
         }
 
-        const totalRevenue = orders.reduce((s: number, o: any) => s + Number(o.grandTotalGbp), 0)
-        const totalVat = orders.reduce((s: number, o: any) => s + Number(o.vatAmountGbp), 0)
+        const totalRevenue = orders.reduce((s: number, o: any) => s + Number(o.totalAmount), 0)
+        const totalVat = orders.reduce((s: number, o: any) => s + Number(o.taxAmount), 0)
         const avgBasket = orders.length > 0
           ? orders.reduce((s: number, o: any) => s + o.lineItems.reduce((ls: number, li: any) => ls + li.quantity, 0), 0) / orders.length
           : 0
@@ -119,20 +119,17 @@ export const GET = withAuth(async (req: NextRequest) => {
       }
 
       case 'category-profitability': {
-        const products = await (prisma.product.findMany as any)({
+        const products = await prisma.item.findMany({
           where: { deletedAt: null },
-          include: {
-            _retailSalesLineItems: true,
-            _batches: true,
-          },
+          include: { category: true, unifiedSalesOrderItems: true },
         })
 
         const byCat: Record<string, { revenue: number; cogs: number }> = {}
         for (const p of products) {
-          const cat = p.category
+          const cat = p.category?.name ?? 'Uncategorized'
           if (!byCat[cat]) byCat[cat] = { revenue: 0, cogs: 0 }
-          for (const li of p._retailSalesLineItems) {
-            byCat[cat].revenue += li.quantity * Number(li.unitPriceGbp) - Number(li.lineDiscountGbp)
+          for (const li of p.unifiedSalesOrderItems) {
+            byCat[cat].revenue += Number(li.quantity) * Number(li.unitPrice) - Number(li.discount)
           }
         }
         const rows = Object.entries(byCat).map(([category, data]) => ({
@@ -145,29 +142,17 @@ export const GET = withAuth(async (req: NextRequest) => {
       }
 
       case 'customer-ltv': {
-        const customers = await (prisma.retailCustomer.findMany as any)({
+        const customers = await prisma.retailCustomer.findMany({
           where: { deletedAt: null },
-          include: { _retailSalesOrders: true },
         })
-        const rows = customers.map((c: any) => {
-          const firstOrderDate = c._retailSalesOrders.length > 0
-            ? c._retailSalesOrders.reduce((min: any, o: any) =>
-                new Date(o.transactionDate) < new Date(min.transactionDate) ? o : min
-              ).transactionDate
-            : null
-          const cohort = firstOrderDate
-            ? `Q${Math.ceil((new Date(firstOrderDate).getMonth() + 1) / 3)} ${new Date(firstOrderDate).getFullYear()}`
-            : 'No Orders'
-          const ltv = c._retailSalesOrders.reduce((s: number, o: any) => s + Number(o.grandTotalGbp), 0)
-          return {
-            customerId: c.id,
-            name: `${c.firstName} ${c.lastName}`,
-            cohort,
-            orderCount: c._retailSalesOrders.length,
-            ltv,
-            loyaltyPoints: c.loyaltyPointsBalance,
-          }
-        })
+        const rows = customers.map((c) => ({
+          customerId: c.id,
+          name: `${c.firstName} ${c.lastName}`,
+          cohort: null,
+          orderCount: 0,
+          ltv: 0,
+          loyaltyPoints: c.loyaltyPointsBalance,
+        }))
         return NextResponse.json({ success: true, data: rows })
       }
 

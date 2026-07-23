@@ -10,10 +10,7 @@ export const GET = withAuth(async (_req: NextRequest, { params, session }: { par
   try {
     const customer = await prisma.retailCustomer.findUnique({
       where: { id },
-      include: {
-        addresses: true,
-        _retailSalesOrders: { include: { lineItems: { include: { item: true, product: true } } }, orderBy: { transactionDate: 'desc' } },
-      } as any,
+      include: { addresses: true },
     })
     if (!customer) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
     return NextResponse.json({ success: true, data: customer })

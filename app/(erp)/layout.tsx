@@ -3,6 +3,7 @@ import { Header } from '@/components/layout/Header'
 import { CompanySettingsProvider } from '@/components/providers/CompanySettingsProvider'
 import { AppStoreHydrator } from '@/components/providers/AppStoreHydrator'
 import { registerEventHandlers } from '@/lib/events/handlers'
+import { Agentation } from 'agentation'
 
 registerEventHandlers()
 
@@ -19,6 +20,7 @@ export default function ERPLayout({ children }: { children: React.ReactNode }) {
             </main>
           </div>
         </div>
+        {process.env.NODE_ENV === 'development' && <Agentation />}
       </AppStoreHydrator>
     </CompanySettingsProvider>
   )

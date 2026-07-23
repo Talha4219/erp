@@ -117,9 +117,9 @@ export async function GET(req: NextRequest) {
           include: { category: { select: { categoryName: true } } },
           take: 500,
         }),
-        (prisma as any)._retailSalesOrder.findMany({
-          where: { transactionDate: { gte: start, lte: end } },
-          select: { transactionDate: true, grandTotalGbp: true },
+        prisma.salesOrderV2.findMany({
+          where: { channel: 'POS', orderDate: { gte: start, lte: end } },
+          select: { orderDate: true, totalAmount: true },
           take: 500,
         }),
       ])
@@ -129,9 +129,9 @@ export async function GET(req: NextRequest) {
 
       for (let m = 1; m <= 12; m++) {
         const monthExpenses = expenses.filter((e: any) => new Date(e.expenseDate).getMonth() + 1 === m)
-        const monthSales = sales.filter((s: any) => new Date(s.transactionDate).getMonth() + 1 === m)
+        const monthSales = sales.filter((s: any) => new Date(s.orderDate).getMonth() + 1 === m)
         const totalExpenses = monthExpenses.reduce((s: number, e: any) => s + Number(e.amountGbp), 0)
-        const totalRevenue = monthSales.reduce((s: number, sale: any) => s + Number(sale.grandTotalGbp), 0)
+        const totalRevenue = monthSales.reduce((s: number, sale: any) => s + Number(sale.totalAmount), 0)
         const breakdown: Record<string, number> = {}
         for (const e of monthExpenses) {
           const cat = e.category.categoryName

@@ -19,22 +19,22 @@ export const GET = withAuth(async () => {
 
     const [todaySales, lastYearSameDay, weeklySales, mtdSales, todayExpenses, wasteToday, lowStockCount, expiryAlerts, mtdCogsRows] =
       await Promise.all([
-        (prisma as any)._retailSalesOrder.aggregate({
-          where: { transactionDate: { gte: todayStart, lte: todayEnd } },
-          _sum: { grandTotalGbp: true, vatAmountGbp: true, netTotalGbp: true },
+        prisma.salesOrderV2.aggregate({
+          where: { channel: 'POS', orderDate: { gte: todayStart, lte: todayEnd } },
+          _sum: { totalAmount: true, taxAmount: true, subTotal: true },
           _count: true,
         }),
-        (prisma as any)._retailSalesOrder.aggregate({
-          where: { transactionDate: { gte: sameWeekdayLastYear, lte: sameWeekdayLastYearEnd } },
-          _sum: { grandTotalGbp: true },
+        prisma.salesOrderV2.aggregate({
+          where: { channel: 'POS', orderDate: { gte: sameWeekdayLastYear, lte: sameWeekdayLastYearEnd } },
+          _sum: { totalAmount: true },
         }),
-        (prisma as any)._retailSalesOrder.aggregate({
-          where: { transactionDate: { gte: weekStart, lte: todayEnd } },
-          _sum: { grandTotalGbp: true, netTotalGbp: true },
+        prisma.salesOrderV2.aggregate({
+          where: { channel: 'POS', orderDate: { gte: weekStart, lte: todayEnd } },
+          _sum: { totalAmount: true, subTotal: true },
         }),
-        (prisma as any)._retailSalesOrder.aggregate({
-          where: { transactionDate: { gte: mtdStart, lte: todayEnd } },
-          _sum: { grandTotalGbp: true, netTotalGbp: true },
+        prisma.salesOrderV2.aggregate({
+          where: { channel: 'POS', orderDate: { gte: mtdStart, lte: todayEnd } },
+          _sum: { totalAmount: true, subTotal: true },
         }),
         prisma.expense.aggregate({
           where: { deletedAt: null, expenseDate: { gte: todayStart, lte: todayEnd } },
@@ -42,13 +42,13 @@ export const GET = withAuth(async () => {
         }),
         prisma.stockAdjustment.findMany({
           where: { reason: 'Expired', adjustedAt: { gte: todayStart, lte: todayEnd } },
-          include: { batch: { include: { _product: true } as any } },
+          include: { batch: { include: { item: true } } },
         }),
-        prisma.product.count({
+        prisma.item.count({
           where: {
             deletedAt: null,
             batches: { none: { quantityOnHand: { gt: 0 } } },
-          } as any,
+          },
         }),
         prisma.inventoryBatch.count({
           where: {
@@ -67,14 +67,14 @@ export const GET = withAuth(async () => {
         `,
       ])
 
-    const todaySalesTotal = Number(todaySales._sum.grandTotalGbp ?? 0)
-    const lastYearTotal = Number(lastYearSameDay._sum.grandTotalGbp ?? 0)
+    const todaySalesTotal = Number(todaySales._sum.totalAmount ?? 0)
+    const lastYearTotal = Number(lastYearSameDay._sum.totalAmount ?? 0)
     const salesVariancePct = lastYearTotal > 0
       ? ((todaySalesTotal - lastYearTotal) / lastYearTotal) * 100
       : 0
 
-    const mtdRevenue = Number(mtdSales._sum.grandTotalGbp ?? 0)
-    const mtdNet = Number(mtdSales._sum.netTotalGbp ?? 0)
+    const mtdRevenue = Number(mtdSales._sum.totalAmount ?? 0)
+    const mtdNet = Number(mtdSales._sum.subTotal ?? 0)
     // True gross profit: net revenue (ex VAT) minus cost of goods sold
     const mtdCogs = mtdCogsRows[0]?.cogs ?? 0
     const grossProfitMtd = mtdNet - mtdCogs
@@ -87,7 +87,7 @@ export const GET = withAuth(async () => {
     const wageCostRatio = todaySalesTotal > 0 ? (todayExpensesTotal / todaySalesTotal) * 100 : 0
 
       const wasteValue = wasteToday.reduce((sum: number, adj: any) => {
-        return sum + Math.abs(adj.quantityChange) * Number(adj.batch._product?.sellingPriceGbp ?? 0)
+        return sum + Math.abs(adj.quantityChange) * Number(adj.batch.item?.sellingPrice ?? 0)
       }, 0)
 
     return NextResponse.json({
@@ -96,7 +96,7 @@ export const GET = withAuth(async () => {
         todaySales: todaySalesTotal,
         lastYearSameDay: lastYearTotal,
         salesVariancePct,
-        weekSales: Number(weeklySales._sum.grandTotalGbp ?? 0),
+        weekSales: Number(weeklySales._sum.totalAmount ?? 0),
         mtdSales: mtdRevenue,
         mtdNetSales: mtdNet,
         mtdCogs,

@@ -23,13 +23,11 @@ export const POST = async (req: NextRequest) => {
       case 'payment_intent.succeeded': {
         const pi = event.data.object
         if (pi.metadata?.posOrderId) {
-          const orderId = parseInt(pi.metadata.posOrderId, 10)
-          if (!isNaN(orderId)) {
-            await (prisma as any)._retailSalesOrder.update({
-              where: { id: orderId },
-              data: { stripePaymentStatus: 'succeeded' },
-            })
-          }
+          const orderId = pi.metadata.posOrderId
+          await prisma.salesOrderV2.update({
+            where: { id: orderId },
+            data: { stripePaymentStatus: 'succeeded' },
+          })
         }
         break
       }
@@ -37,13 +35,11 @@ export const POST = async (req: NextRequest) => {
       case 'payment_intent.payment_failed': {
         const pi = event.data.object
         if (pi.metadata?.posOrderId) {
-          const orderId = parseInt(pi.metadata.posOrderId, 10)
-          if (!isNaN(orderId)) {
-            await (prisma as any)._retailSalesOrder.update({
-              where: { id: orderId },
-              data: { stripePaymentStatus: 'failed' },
-            })
-          }
+          const orderId = pi.metadata.posOrderId
+          await prisma.salesOrderV2.update({
+            where: { id: orderId },
+            data: { stripePaymentStatus: 'failed' },
+          })
         }
         break
       }

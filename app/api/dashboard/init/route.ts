@@ -135,22 +135,26 @@ export const GET = withAuth(async (_req, { session }) => {
     ])
 
     const [posToday, posMTD, posRefunds, posCogs] = await Promise.all([
-      (prisma as any)._retailSalesOrder.aggregate({
-        where: { transactionDate: { gte: todayStart } },
-        _sum: { netTotalGbp: true, grandTotalGbp: true },
+      prisma.salesOrderV2.aggregate({
+        where: { channel: 'POS', orderDate: { gte: todayStart } },
+        _sum: { subTotal: true, totalAmount: true },
       }),
-      (prisma as any)._retailSalesOrder.aggregate({
-        where: { transactionDate: { gte: monthStart } },
-        _sum: { netTotalGbp: true, grandTotalGbp: true },
+      prisma.salesOrderV2.aggregate({
+        where: { channel: 'POS', orderDate: { gte: monthStart } },
+        _sum: { subTotal: true, totalAmount: true },
       }),
-      prisma.$queryRaw<Array<{ net_today: number; net_mtd: number }>>`
-        SELECT
-          COALESCE(SUM(rr."refundAmountGbp" / (1 + li."vatRateApplied")) FILTER (WHERE rr."returnDate" >= ${todayStart}), 0)::float AS net_today,
-          COALESCE(SUM(rr."refundAmountGbp" / (1 + li."vatRateApplied")), 0)::float AS net_mtd
-        FROM "ReturnRefund" rr
-        JOIN "RetailSalesLineItem" li ON li.id = rr."originalLineId"
-        WHERE rr."returnDate" >= ${monthStart}
-      `,
+      (async () => {
+        const mtdRefunds = await prisma.salesPayment.findMany({
+          where: { method: 'REFUND', paidAt: { gte: monthStart } },
+          include: { soItem: { select: { taxRate: true } } },
+        })
+        const netToday = mtdRefunds
+          .filter((r) => r.paidAt && r.paidAt >= todayStart)
+          .reduce((s, r) => s + Number(r.amount) / (1 + Number(r.soItem?.taxRate ?? 0)), 0)
+        const netMtd = mtdRefunds
+          .reduce((s, r) => s + Number(r.amount) / (1 + Number(r.soItem?.taxRate ?? 0)), 0)
+        return [{ net_today: netToday, net_mtd: netMtd }]
+      })(),
       prisma.$queryRaw<Array<{ cogs_today: number; cogs_mtd: number }>>`
         SELECT
           COALESCE(SUM(CASE WHEN "referenceType" = 'POS' THEN "totalCost" ELSE -"totalCost" END)
@@ -161,8 +165,8 @@ export const GET = withAuth(async (_req, { session }) => {
       `,
     ])
 
-    const posRevenueToday = Number(posToday._sum.netTotalGbp ?? 0) - (posRefunds[0]?.net_today ?? 0)
-    const posRevenueMTD = Number(posMTD._sum.netTotalGbp ?? 0) - (posRefunds[0]?.net_mtd ?? 0)
+    const posRevenueToday = Number(posToday._sum.subTotal ?? 0) - (posRefunds[0]?.net_today ?? 0)
+    const posRevenueMTD = Number(posMTD._sum.subTotal ?? 0) - (posRefunds[0]?.net_mtd ?? 0)
     const posCogsToday = posCogs[0]?.cogs_today ?? 0
     const posCogsMTD = posCogs[0]?.cogs_mtd ?? 0
 

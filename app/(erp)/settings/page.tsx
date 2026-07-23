@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { api } from '@/lib/api-client'
@@ -346,47 +346,45 @@ export default function SettingsPage() {
   const permissions: Permission[] = batchData?.permissions ?? []
   const roles: CustomRole[] = batchData?.roles ?? []
   const rolesLoading = batchLoading
+  const roleInvalidate = () => {
+    qc.invalidateQueries({ queryKey: ['custom-roles'] })
+    qc.invalidateQueries({ queryKey: ['settings-init'] })
+  }
   const addRoleMutation = useMutation({
     mutationFn: (d: typeof roleForm) => api.post('/api/settings/roles', d),
-    onSuccess: () => { toast.success('Role created'); qc.invalidateQueries({ queryKey: ['custom-roles'] }); setRoleForm({ name: '', description: '', permissionIds: [], submodules: {} }) },
+    onSuccess: () => { toast.success('Role created'); roleInvalidate(); setRoleForm({ name: '', description: '', permissionIds: [], submodules: {} }) },
     onError: () => toast.error('Failed to create role'),
   })
   const toggleRoleActiveMutation = useMutation({
     mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) => api.patch(`/api/settings/roles/${id}`, { isActive }),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['custom-roles'] }) },
+    onSuccess: () => { roleInvalidate() },
     onError: () => toast.error('Failed'),
   })
   const deleteRoleMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/api/settings/roles/${id}`),
-    onSuccess: () => { toast.success('Role deleted'); qc.invalidateQueries({ queryKey: ['custom-roles'] }) },
+    onSuccess: () => { toast.success('Role deleted'); roleInvalidate() },
     onError: () => toast.error('Cannot delete role — it may have users assigned'),
   })
   const updateRoleMetaMutation = useMutation({
     mutationFn: ({ id, name, description }: { id: string; name: string; description: string }) =>
       api.patch(`/api/settings/roles/${id}`, { name, description }),
-    onSuccess: () => { toast.success('Role updated'); qc.invalidateQueries({ queryKey: ['custom-roles'] }); setEditRoleId(null); setExpandedRole(null) },
+    onSuccess: () => { toast.success('Role updated'); roleInvalidate(); setEditRoleId(null); setExpandedRole(null) },
     onError: () => toast.error('Failed to update role'),
   })
   const toggleModuleMutation = useMutation({
-    mutationFn: ({ roleId, module, enable, scope }: { roleId: string; module: string; enable: boolean; scope: string }) => {
+    mutationFn: ({ roleId, module, enable }: { roleId: string; module: string; enable: boolean }) => {
       const modulePerms = permissions.filter((p) => p.module === module)
       return api.patch(`/api/settings/roles/${roleId}`, enable
-        ? { addPermissions: modulePerms.map((p) => ({ permissionId: p.id, scope })) }
+        ? { addPermissions: modulePerms.map((p) => ({ permissionId: p.id, scope: 'organization' })) }
         : { removePermissionIds: modulePerms.map((p) => p.id) })
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['custom-roles'] }),
+    onSuccess: () => roleInvalidate(),
     onError: () => toast.error('Failed to update module access'),
-  })
-  const updateModuleScopeMutation = useMutation({
-    mutationFn: ({ roleId, module, scope }: { roleId: string; module: string; scope: string }) =>
-      api.patch(`/api/settings/roles/${roleId}`, { updateModuleScope: { module, scope } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['custom-roles'] }),
-    onError: () => toast.error('Failed to update scope'),
   })
   const updateSubmodulesMutation = useMutation({
     mutationFn: ({ roleId, module, submodules }: { roleId: string; module: string; submodules: string[] }) =>
       api.patch(`/api/settings/roles/${roleId}`, { submodules: { [module]: submodules } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['custom-roles'] }),
+    onSuccess: () => roleInvalidate(),
     onError: () => toast.error('Failed to update sub-modules'),
   })
   const permModules = Array.from(new Set(permissions.map((p) => p.module)))
@@ -600,6 +598,7 @@ export default function SettingsPage() {
       toast.success('General settings saved')
       setGeneralBaseline(generalForm)
       qc.invalidateQueries({ queryKey: ['settings'] })
+      qc.invalidateQueries({ queryKey: ['settings-init'] })
     },
     onError: () => toast.error('Failed to save general settings'),
   })
@@ -841,8 +840,8 @@ export default function SettingsPage() {
                           </td>
                         </tr>
                       ) : (users ?? []).map((u) => (
-                        <>
-                            <tr key={u.id} className="border-b hover:bg-muted/20 transition-colors">
+                        <React.Fragment key={u.id}>
+                            <tr className="border-b hover:bg-muted/20 transition-colors">
                             <td className="px-4 py-3">
                               <div className="flex items-center gap-2.5">
                                 <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary shrink-0">
@@ -1075,7 +1074,7 @@ export default function SettingsPage() {
                               </td>
                             </tr>
                           )}
-                      </>
+                      </React.Fragment>
                       ))}
                     </tbody>
                   </table>
@@ -1618,7 +1617,6 @@ export default function SettingsPage() {
                           {permModules.map((mod) => {
                             const cfg = MODULE_CONFIG[mod] ?? { label: mod, color: 'bg-gray-500' }
                             const enabled = role.permissions.some((rp) => rp.permission.module === mod)
-                            const scope = role.permissions.find((rp) => rp.permission.module === mod)?.scope ?? 'organization'
                             const actionCount = permissions.filter((p) => p.module === mod).length
                             const subModules = SUBMODULE_MAP[mod]
                             const roleSubs = (role.submodules?.[mod] ?? subModules?.map((s) => s.key) ?? [])
@@ -1643,26 +1641,13 @@ export default function SettingsPage() {
                                     disabled={toggleModuleMutation.isPending}
                                     onChange={() => toggleModuleMutation.mutate({
                                       roleId: role.id, module: mod,
-                                      enable: !enabled, scope: scope,
+                                      enable: !enabled,
                                     })}
                                   />
                                 </div>
                                 <p className="text-xs text-muted-foreground mb-2">{actionCount} action{actionCount !== 1 ? 's' : ''}</p>
                                 {enabled && (
                                   <div className="space-y-1">
-                                    <select
-                                      className="w-full text-xs border rounded px-1.5 py-1 bg-white focus:outline-none focus:ring-1 focus:ring-primary/40"
-                                      value={scope}
-                                      disabled={updateModuleScopeMutation.isPending}
-                                      onChange={(e) => updateModuleScopeMutation.mutate({
-                                        roleId: role.id, module: mod, scope: e.target.value,
-                                      })}
-                                    >
-                                      <option value="own">Own records only</option>
-                                      <option value="department">Department</option>
-                                      <option value="branch">Branch</option>
-                                      <option value="organization">Organisation-wide</option>
-                                    </select>
                                     {subModules && (
                                       <div className="mt-1.5 pt-1.5 border-t border-border/40 space-y-0.5">
                                         {subModules.map((sm) => (

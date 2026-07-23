@@ -11,13 +11,13 @@ export const GET = withAuth(async (req: NextRequest) => {
 
   try {
     if (lowStock) {
-      const products = await prisma.product.findMany({
+      const products = await prisma.item.findMany({
         where: { deletedAt: null },
-        include: { _batches: { where: { quantityOnHand: { gt: 0 } } } } as any,
+        include: { batches: { where: { quantityOnHand: { gt: 0 } } } },
       })
-      const lowStockProducts = products.filter((p: any) => {
-        const totalQty = p._batches.reduce((sum: number, b: any) => sum + b.quantityOnHand, 0)
-        return totalQty <= p.reorderLevel
+      const lowStockProducts = products.filter((p) => {
+        const totalQty = p.batches.reduce((sum: number, b: any) => sum + b.quantityOnHand, 0)
+        return totalQty <= Number(p.reorderPoint ?? 0)
       })
       return NextResponse.json({ success: true, data: lowStockProducts })
     }
@@ -31,7 +31,7 @@ export const GET = withAuth(async (req: NextRequest) => {
           expiryDate: { lte: cutoff, gte: new Date() },
           quantityOnHand: { gt: 0 },
         },
-        include: { _product: true } as any,
+        include: { item: { select: { id: true, name: true, sku: true, sellingPrice: true } } },
         orderBy: { expiryDate: 'asc' },
       })
       return NextResponse.json({ success: true, data: batches })
@@ -39,7 +39,7 @@ export const GET = withAuth(async (req: NextRequest) => {
 
     const batches = await prisma.inventoryBatch.findMany({
       where: productId ? { itemId: productId } : {},
-      include: { _product: true } as any,
+      include: { item: { select: { id: true, name: true, sku: true, sellingPrice: true } } },
       orderBy: [{ expiryDate: 'asc' }, { receivedDate: 'asc' }],
     })
     return NextResponse.json({ success: true, data: batches })

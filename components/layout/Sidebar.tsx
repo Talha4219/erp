@@ -330,16 +330,18 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'relative flex flex-col bg-[#0f1117] text-gray-100 transition-all duration-300 ease-in-out min-h-screen border-r border-white/5',
+        'relative flex flex-col text-gray-100 transition-all duration-400 ease-in-out min-h-screen',
+        'bg-[#07080c]/95 backdrop-blur-xl backdrop-saturate-150 border-r border-white/[0.06]',
+        'shadow-[2px_0_24px_-8px_rgba(0,0,0,0.4)]',
         collapsed ? 'w-[60px]' : 'w-[240px]'
       )}
     >
       {/* Logo + collapse */}
       <div className={cn(
-        'flex items-center border-b border-white/5 h-14 flex-shrink-0',
+        'flex items-center border-b border-white/[0.06] h-14 flex-shrink-0',
         collapsed ? 'justify-center px-3' : 'px-3 gap-2.5'
       )}>
-        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-indigo-600 shadow-lg shadow-indigo-500/30">
+        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/25 ring-1 ring-white/10">
           {branding.logo ? (
             <img src={branding.logo} alt={branding.name} className="h-full w-full object-cover" />
           ) : (
@@ -348,13 +350,13 @@ export function Sidebar() {
         </div>
         {!collapsed && (
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-bold text-white leading-none">{branding.name}</p>
-            <p className="text-[10px] text-gray-500 mt-0.5">Business Suite</p>
+            <p className="truncate text-sm font-semibold text-white/90 leading-none tracking-tight">{branding.name}</p>
+            <p className="text-[10px] text-gray-500 mt-0.5 font-medium">Business Suite</p>
           </div>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="rounded-md p-1 text-gray-600 hover:text-gray-300 hover:bg-white/5 transition-colors flex-shrink-0"
+          className="rounded-lg p-1.5 text-gray-500 hover:text-gray-200 hover:bg-white/[0.08] transition-all duration-200 flex-shrink-0 active:scale-95"
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {collapsed ? <ChevronRight className="h-3.5 w-3.5" /> : <ChevronLeft className="h-3.5 w-3.5" />}
@@ -363,24 +365,24 @@ export function Sidebar() {
 
       {/* Quick Create */}
       {!collapsed && (
-        <div className="px-3 py-2.5 border-b border-white/5 flex-shrink-0 relative">
+        <div className="px-3 py-2.5 border-b border-white/[0.06] flex-shrink-0 relative">
           <button
             onClick={() => setShowQuickCreate((v) => !v)}
-            className="flex w-full items-center gap-2 rounded-lg bg-indigo-600/20 border border-indigo-500/30 px-3 py-1.5 text-xs font-medium text-indigo-300 hover:bg-indigo-600/30 transition-all"
+            className="flex w-full items-center gap-2 rounded-xl bg-white/[0.06] border border-white/[0.08] px-3 py-2 text-xs font-medium text-indigo-300 hover:bg-white/[0.1] hover:text-indigo-200 transition-all duration-200 active:scale-[0.98]"
           >
             <Plus className="h-3.5 w-3.5" />
             Quick Create
-            <ChevronDown className={cn('ml-auto h-3 w-3 transition-transform', showQuickCreate && 'rotate-180')} />
+            <ChevronDown className={cn('ml-auto h-3 w-3 transition-transform duration-200', showQuickCreate && 'rotate-180')} />
           </button>
 
           {showQuickCreate && (
-            <div className="absolute left-3 right-3 top-full mt-1 z-50 rounded-xl border border-white/10 bg-[#1a1d26] shadow-2xl shadow-black/40 overflow-hidden">
+            <div className="absolute left-3 right-3 top-full mt-1.5 z-50 rounded-2xl border border-white/[0.08] bg-[#1a1d26]/95 backdrop-blur-xl shadow-2xl shadow-black/50 overflow-hidden">
               {QUICK_CREATE.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setShowQuickCreate(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 text-[11px] text-gray-300 hover:bg-white/5 hover:text-white transition-colors border-b border-white/5 last:border-0"
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 text-[11px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-all duration-150 border-b border-white/[0.04] last:border-0"
                 >
                   <item.icon className={cn('h-3.5 w-3.5 flex-shrink-0', item.color)} />
                   {item.label}
@@ -397,7 +399,7 @@ export function Sidebar() {
         {/* Pinned */}
         {!collapsed && pinnedItems.length > 0 && (
           <div className="mb-1">
-            <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-widest text-gray-600 select-none flex items-center gap-1.5">
+            <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-gray-500/70 select-none flex items-center gap-1.5">
               <Pin className="h-2.5 w-2.5" /> Pinned
             </p>
             <div className="space-y-0.5 px-2">
@@ -408,8 +410,8 @@ export function Sidebar() {
                     <Link
                       href={item.href}
                       className={cn(
-                        'flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-all pr-8',
-                        isActive ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
+                        'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150 pr-8',
+                        isActive ? 'bg-white/[0.1] text-white shadow-sm' : 'text-gray-400 hover:bg-white/[0.06] hover:text-gray-200'
                       )}
                     >
                       <item.icon className="h-3.5 w-3.5 flex-shrink-0" />
@@ -426,14 +428,14 @@ export function Sidebar() {
                 )
               })}
             </div>
-            <div className="mx-3 mt-2 h-px bg-white/5" />
+            <div className="mx-3 mt-2 h-px bg-white/[0.04]" />
           </div>
         )}
 
         {/* Recents */}
         {!collapsed && recents.length > 0 && (
           <div className="mb-1">
-            <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-widest text-gray-600 select-none flex items-center gap-1.5">
+            <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-gray-500/70 select-none flex items-center gap-1.5">
               <History className="h-2.5 w-2.5" /> Recents
             </p>
             <div className="space-y-0.5 px-2">
@@ -446,8 +448,8 @@ export function Sidebar() {
                     <Link
                       href={href}
                       className={cn(
-                        'flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-all pr-8',
-                        isActive ? 'bg-white/10 text-white' : 'text-gray-500 hover:bg-white/5 hover:text-gray-300'
+                        'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150 pr-8',
+                        isActive ? 'bg-white/[0.1] text-white' : 'text-gray-500 hover:bg-white/[0.06] hover:text-gray-300'
                       )}
                     >
                       <item.icon className="h-3.5 w-3.5 flex-shrink-0 opacity-60" />
@@ -467,7 +469,7 @@ export function Sidebar() {
                 )
               })}
             </div>
-            <div className="mx-3 mt-2 h-px bg-white/5" />
+            <div className="mx-3 mt-2 h-px bg-white/[0.04]" />
           </div>
         )}
 
@@ -475,12 +477,12 @@ export function Sidebar() {
         {visibleGroups.map((group, gi) => (
           <div key={group.label} className={cn(gi > 0 && 'mt-1')}>
             {!collapsed && (
-              <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-widest text-gray-600 select-none">
+              <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-gray-500/70 select-none">
                 {group.label}
               </p>
             )}
             {collapsed && gi > 0 && (
-              <div className="mx-3 my-2 h-px bg-white/5" />
+              <div className="mx-3 my-2 h-px bg-white/[0.04]" />
             )}
 
             <div className="space-y-0.5 px-2">
@@ -496,8 +498,8 @@ export function Sidebar() {
                         key={item.href}
                         href={item.children[0].href}
                         className={cn(
-                          'flex items-center justify-center rounded-md p-2 transition-all',
-                          isGroupActive ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
+                          'flex items-center justify-center rounded-lg p-2 transition-all duration-150',
+                          isGroupActive ? 'bg-white/[0.1] text-white' : 'text-gray-400 hover:bg-white/[0.06] hover:text-gray-200'
                         )}
                         title={item.label}
                       >
@@ -511,47 +513,54 @@ export function Sidebar() {
                       <button
                         onClick={() => toggleGroup(item.href)}
                         className={cn(
-                          'flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-all',
-                          isGroupActive ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
+                          'flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150',
+                          isGroupActive ? 'bg-white/[0.1] text-white shadow-sm' : 'text-gray-400 hover:bg-white/[0.06] hover:text-gray-200'
                         )}
                       >
                         {isGroupActive && <span className={cn('w-1 h-1 rounded-full flex-shrink-0', accent)} />}
                         <item.icon className={cn('h-4 w-4 flex-shrink-0', !isGroupActive && 'ml-3')} />
                         <span className="flex-1 text-left truncate">{item.label}</span>
-                        <ChevronDown className={cn('h-3 w-3 flex-shrink-0 text-gray-500 transition-transform', isExpanded && 'rotate-180')} />
+                        <ChevronDown className={cn('h-3 w-3 flex-shrink-0 text-gray-500 transition-transform duration-200', isExpanded && 'rotate-180')} />
                       </button>
 
-                      {isExpanded && (
-                        <div className="ml-3 mt-0.5 space-y-0.5 border-l border-white/10 pl-2.5">
-                          {item.children.map((child) => {
-                            const childActive = pathname === child.href
-                            return (
-                              <div key={child.href} className="group relative">
-                                <Link
-                                  href={child.href}
-                                  className={cn(
-                                    'flex items-center gap-2 rounded-md px-2 py-1.5 text-[11px] transition-all pr-7',
-                                    childActive ? 'bg-white/10 text-white font-medium' : 'text-gray-500 hover:bg-white/5 hover:text-gray-300'
-                                  )}
-                                >
-                                  <child.icon className="h-3 w-3 flex-shrink-0" />
-                                  <span className="truncate">{child.label}</span>
-                                </Link>
-                                <button
-                                  onClick={() => togglePin(child.href)}
-                                  className={cn(
-                                    'absolute right-1.5 top-1/2 -translate-y-1/2 hidden group-hover:flex h-4 w-4 items-center justify-center rounded transition-colors',
-                                    pins.includes(child.href) ? 'text-amber-400' : 'text-gray-600 hover:text-amber-400'
-                                  )}
-                                  title={pins.includes(child.href) ? 'Unpin' : 'Pin'}
-                                >
-                                  <Pin className="h-2.5 w-2.5" />
-                                </button>
-                              </div>
-                            )
-                          })}
+                      <div
+                        className={cn(
+                          'grid transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]',
+                          isExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                        )}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="ml-3 mt-0.5 space-y-0.5 border-l border-white/[0.06] pl-2.5">
+                            {item.children.map((child) => {
+                              const childActive = pathname === child.href
+                              return (
+                                <div key={child.href} className="group relative">
+                                  <Link
+                                    href={child.href}
+                                    className={cn(
+                                      'flex items-center gap-2 rounded-lg px-2 py-1.5 text-[11px] transition-all duration-150 pr-7',
+                                      childActive ? 'bg-white/[0.08] text-white font-medium' : 'text-gray-500 hover:bg-white/[0.06] hover:text-gray-300'
+                                    )}
+                                  >
+                                    <child.icon className="h-3 w-3 flex-shrink-0" />
+                                    <span className="truncate">{child.label}</span>
+                                  </Link>
+                                  <button
+                                    onClick={() => togglePin(child.href)}
+                                    className={cn(
+                                      'absolute right-1.5 top-1/2 -translate-y-1/2 hidden group-hover:flex h-4 w-4 items-center justify-center rounded transition-colors',
+                                      pins.includes(child.href) ? 'text-amber-400' : 'text-gray-600 hover:text-amber-400'
+                                    )}
+                                    title={pins.includes(child.href) ? 'Unpin' : 'Pin'}
+                                  >
+                                    <Pin className="h-2.5 w-2.5" />
+                                  </button>
+                                </div>
+                              )
+                            })}
+                          </div>
                         </div>
-                      )}
+                      </div>
                     </div>
                   )
                 }
@@ -563,8 +572,8 @@ export function Sidebar() {
                       href={item.href}
                       title={collapsed ? item.label : undefined}
                       className={cn(
-                        'flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-all',
-                        isActive ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200',
+                        'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150',
+                        isActive ? 'bg-white/[0.1] text-white shadow-sm' : 'text-gray-400 hover:bg-white/[0.06] hover:text-gray-200',
                         collapsed ? 'justify-center px-2' : !isActive && 'pr-8'
                       )}
                     >
@@ -595,37 +604,37 @@ export function Sidebar() {
       </nav>
 
       {/* User section */}
-      <div className="border-t border-white/5 p-2 flex-shrink-0">
+      <div className="border-t border-white/[0.06] p-2 flex-shrink-0">
         {collapsed ? (
           <button
             onClick={() => signOut({ callbackUrl: '/login' })}
-            className="flex w-full items-center justify-center rounded-md p-2 text-gray-500 hover:text-white hover:bg-white/5 transition-colors"
+            className="flex w-full items-center justify-center rounded-lg p-2 text-gray-500 hover:text-white hover:bg-white/[0.06] transition-all duration-150 active:scale-95"
             title="Sign out"
           >
             <LogOut className="h-4 w-4" />
           </button>
         ) : (
-          <div className="rounded-lg bg-white/5 p-2.5">
+          <div className="rounded-xl bg-white/[0.04] backdrop-blur-xl border border-white/[0.06] p-2.5">
             <div className="flex items-center gap-2.5 mb-2">
-              <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-[10px] font-bold text-white shadow-md">
+              <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-[10px] font-bold text-white shadow-lg shadow-indigo-500/20 ring-1 ring-white/10">
                 {getInitials(userName)}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold text-white truncate leading-none">{userName}</p>
-                <p className="text-[10px] text-gray-500 truncate mt-0.5">{userRole ? ROLE_LABELS[userRole] : ''}</p>
+                <p className="text-xs font-semibold text-white/90 truncate leading-none tracking-tight">{userName}</p>
+                <p className="text-[10px] text-gray-500 truncate mt-0.5 font-medium">{userRole ? ROLE_LABELS[userRole] : ''}</p>
               </div>
             </div>
-            <div className="flex gap-1">
+            <div className="flex gap-1.5">
               <Link
                 href="/dashboard"
-                className="flex flex-1 items-center gap-1.5 rounded-md px-2 py-1 text-[11px] text-gray-500 hover:text-white hover:bg-white/5 transition-colors"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-medium text-gray-400 hover:text-white hover:bg-white/[0.06] transition-all duration-150 active:scale-95"
               >
                 <User className="h-3 w-3" />
                 Profile
               </Link>
               <button
                 onClick={() => signOut({ callbackUrl: '/login' })}
-                className="flex flex-1 items-center gap-1.5 rounded-md px-2 py-1 text-[11px] text-gray-500 hover:text-white hover:bg-white/5 transition-colors"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-medium text-gray-400 hover:text-white hover:bg-white/[0.06] transition-all duration-150 active:scale-95"
               >
                 <LogOut className="h-3 w-3" />
                 Sign out

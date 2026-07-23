@@ -5,16 +5,10 @@ import { prisma } from '@/lib/prisma'
 export const GET = withAuth(async (_req: NextRequest, { params }: { params: { id: string } } & { session: AuthedSession }) => {
   const id = parseInt(params.id)
   try {
-    const customer = await (prisma.retailCustomer.findUnique({
+    const customer = await prisma.retailCustomer.findUnique({
       where: { id },
-      include: {
-        addresses: true,
-        _retailSalesOrders: {
-          include: { lineItems: { include: { item: true, product: true } } },
-          orderBy: { transactionDate: 'desc' },
-        },
-      } as any,
-    })) as any
+      include: { addresses: true },
+    })
     if (!customer) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 })
 
     const rows: string[] = [
@@ -33,13 +27,18 @@ export const GET = withAuth(async (_req: NextRequest, { params }: { params: { id
       rows.push(`Address,${addr.addressLine1} ${addr.city} ${addr.postcode},${addr.isPrimary ? 'Primary' : ''}`)
     }
 
-    for (const order of customer._retailSalesOrders) {
-      rows.push(`Transaction,Date,${new Date(order.transactionDate).toLocaleDateString('en-GB')}`)
-      rows.push(`Transaction,Total,£${Number(order.grandTotalGbp).toFixed(2)}`)
-      rows.push(`Transaction,Payment Method,${order.paymentMethod}`)
+    const orders = await prisma.salesOrderV2.findMany({
+      where: { channel: 'POS', orderDate: { gte: new Date(new Date().getFullYear(), 0, 1) } },
+      include: { lineItems: { include: { item: { select: { name: true } } } } },
+      orderBy: { orderDate: 'desc' },
+    })
+    for (const order of orders) {
+      rows.push(`Transaction,Date,${new Date(order.orderDate).toLocaleDateString('en-GB')}`)
+      rows.push(`Transaction,Total,£${Number(order.totalAmount).toFixed(2)}`)
+      rows.push(`Transaction,ID,${order.orderNumber}`)
       for (const li of order.lineItems) {
-        const name = li.item?.name ?? li.product?.productName ?? 'Item'
-        rows.push(`Transaction Line,${name},Qty ${li.quantity} @ £${Number(li.unitPriceGbp).toFixed(2)}`)
+        const name = li.item?.name ?? li.description
+        rows.push(`Transaction Line,${name},Qty ${li.quantity} @ £${Number(li.unitPrice).toFixed(2)}`)
       }
     }
 
