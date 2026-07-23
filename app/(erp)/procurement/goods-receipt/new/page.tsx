@@ -159,7 +159,7 @@ function NewGRNPageContent() {
   return (
     <div className="space-y-5">
       {/* ── Sticky wizard header ── */}
-      <div className="sticky top-0 z-10 -mx-4 border-b border-border/60 bg-background/95 backdrop-blur px-4 py-3">
+      <div className="sticky top-0 z-10 -mx-4 border-b bg-background/95 backdrop-blur px-4 py-3">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
@@ -224,7 +224,7 @@ function NewGRNPageContent() {
           </Card>
 
           {/* Delivery information */}
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
                 <Truck className="h-4 w-4 text-purple-500" />Delivery Information
@@ -268,7 +268,7 @@ function NewGRNPageContent() {
       {/* ── Step 1: Received Items ── */}
       {step === 1 && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <Card className="lg:col-span-2 border-border/60 shadow-sm">
+          <Card className="lg:col-span-2">
             <CardHeader className="pb-2 pt-4 px-5">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
                 <Package className="h-4 w-4 text-emerald-500" />Enter Received Quantities
@@ -335,7 +335,7 @@ function NewGRNPageContent() {
           </Card>
 
           {/* Cost summary sidebar */}
-          <Card className="border-border/60 shadow-sm sticky top-28 self-start">
+          <Card className="sticky top-28 self-start">
             <CardHeader className="pb-2 pt-4 px-5">
               <CardTitle className="text-sm font-semibold">Receipt Summary</CardTitle>
             </CardHeader>
@@ -392,7 +392,7 @@ function NewGRNPageContent() {
       {/* ── Step 2: Inspection ── */}
       {step === 2 && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-emerald-500" />Quality Inspection
@@ -430,7 +430,7 @@ function NewGRNPageContent() {
           </Card>
 
           {/* Quality summary table */}
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5">
               <CardTitle className="text-sm font-semibold">Quality Check Summary</CardTitle>
             </CardHeader>
@@ -483,7 +483,7 @@ function NewGRNPageContent() {
       {step === 3 && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="space-y-4">
-            <Card className="border-border/60 shadow-sm">
+            <Card >
               <CardHeader className="pb-2 pt-4 px-5">
                 <CardTitle className="text-sm font-semibold">GRN Review</CardTitle>
               </CardHeader>
@@ -531,7 +531,7 @@ function NewGRNPageContent() {
           </div>
 
           {/* Items confirmation table */}
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5">
               <CardTitle className="text-sm font-semibold">Items Confirmation</CardTitle>
             </CardHeader>
@@ -574,7 +574,7 @@ function NewGRNPageContent() {
       )}
 
       {/* ── Sticky footer ── */}
-      <div className="sticky bottom-0 -mx-4 flex items-center justify-between gap-3 border-t border-border/60 bg-background/95 backdrop-blur px-4 py-3">
+      <div className="sticky bottom-0 -mx-4 flex items-center justify-between gap-3 border-t bg-background/95 backdrop-blur px-4 py-3">
         <Button type="button" variant="outline" className="text-xs h-8"
           onClick={() => step > 0 ? setStep(s => s - 1) : router.back()}>
           {step === 0 ? 'Cancel' : '← Back'}

@@ -166,7 +166,7 @@ export function PageClient({ initialData }: { initialData: PO[] }) {
           { Icon: AlertTriangle,  label: 'Delayed',           value: kpis.delayed,                     cls: kpis.delayed > 0 ? 'text-red-600' : 'text-muted-foreground', bg: kpis.delayed > 0 ? 'bg-red-50' : 'bg-muted/40' },
           { Icon: Clock,          label: 'Avg Lead Time',     value: `${kpis.avgDays}d`,               cls: 'text-slate-600',  bg: 'bg-slate-50' },
         ].map(({ Icon, label, value, cls, bg }) => (
-          <Card key={label} className="border-border/60 shadow-sm">
+          <Card key={label} >
             <CardContent className="p-3.5">
               <div className={cn('mb-2 inline-flex h-7 w-7 items-center justify-center rounded-lg', bg)}>
                 <Icon className={cn('h-3.5 w-3.5', cls)} />
@@ -179,7 +179,7 @@ export function PageClient({ initialData }: { initialData: PO[] }) {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-blue-500" />Procurement Pipeline
@@ -203,7 +203,7 @@ export function PageClient({ initialData }: { initialData: PO[] }) {
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-purple-500" />Supplier Spend Analysis

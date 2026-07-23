@@ -118,7 +118,7 @@ function NewRFQDialog({ open, onClose, onSuccess, vendors, sourcePr }: {
     <Dialog open={open} onOpenChange={o => !o && handleClose()}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
         {/* Sticky wizard header */}
-        <div className="sticky top-0 z-10 border-b border-border/60 bg-white px-6 py-4">
+        <div className="sticky top-0 z-10 border-b bg-white px-6 py-4">
           <div className="flex items-center justify-between mb-3">
             <div>
               <h2 className="text-base font-bold">New Request for Quotation</h2>
@@ -219,7 +219,7 @@ function NewRFQDialog({ open, onClose, onSuccess, vendors, sourcePr }: {
                   <Plus className="h-3 w-3 mr-1" />Add Item
                 </Button>
               </div>
-              <div className="rounded-xl border border-border/60 overflow-hidden">
+              <div className="rounded-xl border overflow-hidden">
                 <div className="grid grid-cols-12 gap-2 bg-muted/50 px-4 py-2 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                   <span className="col-span-7">Description</span>
                   <span className="col-span-2">Qty</span>
@@ -276,7 +276,7 @@ function NewRFQDialog({ open, onClose, onSuccess, vendors, sourcePr }: {
                   <p className="text-sm">{form.title}</p>
                 </div>
               )}
-              <div className="rounded-xl border border-border/60 overflow-hidden">
+              <div className="rounded-xl border overflow-hidden">
                 <div className="bg-muted/50 px-4 py-2 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Items</div>
                 {rows.filter(r => r.description.trim()).map((row, i) => (
                   <div key={i} className="flex items-center justify-between border-t border-border/30 px-4 py-2.5 text-sm">
@@ -296,7 +296,7 @@ function NewRFQDialog({ open, onClose, onSuccess, vendors, sourcePr }: {
         </div>
 
         {/* Sticky footer */}
-        <div className="sticky bottom-0 border-t border-border/60 bg-white px-6 py-4 flex items-center justify-between">
+        <div className="sticky bottom-0 border-t bg-white px-6 py-4 flex items-center justify-between">
           <div className="flex gap-2">
             {step !== 'info' && (
               <Button variant="outline" size="sm" onClick={() => setStep(step === 'review' ? 'items' : 'info')}>← Back</Button>
@@ -422,7 +422,7 @@ function RFQsPageContent() {
           { icon: CheckCircle,   label: 'Responses Received',  value: kpis.responses, cls: 'text-emerald-600', bg: 'bg-emerald-50' },
           { icon: AlertTriangle, label: 'Overdue RFQs',        value: kpis.overdue,   cls: 'text-red-600',     bg: 'bg-red-50',     ring: kpis.overdue > 0 },
         ].map(({ icon: Icon, label, value, cls, bg, ring }) => (
-          <Card key={label} className={cn('border-border/60 shadow-sm', ring ? 'ring-1 ring-amber-200' : '')}>
+          <Card key={label} className={cn(', ring ? 'ring-1 ring-amber-200' : '')}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
@@ -438,7 +438,7 @@ function RFQsPageContent() {
 
       {/* Pipeline + Supplier Response Rate */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <Card className="lg:col-span-2 border-border/60 shadow-sm">
+        <Card className="lg:col-span-2">
           <CardHeader className="pb-2 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -482,7 +482,7 @@ function RFQsPageContent() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <Star className="h-4 w-4 text-amber-500" />Supplier Response Rate
@@ -552,7 +552,7 @@ function RFQsPageContent() {
       </div>
 
       {/* RFQ Table */}
-      <Card className="border-border/60 shadow-sm">
+      <Card >
         <div className="overflow-x-auto">
           {isLoading ? (
             <div className="space-y-2 p-4">

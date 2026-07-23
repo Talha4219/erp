@@ -150,7 +150,7 @@ function NewPRDialog({ open, onClose, onSuccess }: { open: boolean; onClose: () 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && handleClose()}>
       <DialogContent className="max-w-3xl max-h-[92vh] overflow-y-auto p-0">
-        <div className="sticky top-0 z-10 border-b border-border/60 bg-white px-6 py-4">
+        <div className="sticky top-0 z-10 border-b bg-white px-6 py-4">
           <div className="flex items-center justify-between mb-3">
             <div>
               <h2 className="text-base font-bold">New Purchase Request</h2>
@@ -280,7 +280,7 @@ function NewPRDialog({ open, onClose, onSuccess }: { open: boolean; onClose: () 
                   <Plus className="h-3 w-3 mr-1" />Add Item
                 </Button>
               </div>
-              <div className="rounded-xl border border-border/60 overflow-hidden">
+              <div className="rounded-xl border overflow-hidden">
                 <div className="grid grid-cols-12 gap-2 bg-muted/50 px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                   <span className="col-span-4">Description</span>
                   <span className="col-span-2">Qty</span>
@@ -312,12 +312,12 @@ function NewPRDialog({ open, onClose, onSuccess }: { open: boolean; onClose: () 
                   })}
                 </div>
               </div>
-              <div className="rounded-xl border border-border/60 bg-muted/20 p-4">
+              <div className="rounded-xl border bg-muted/20 p-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <div className="flex justify-between text-xs"><span className="text-muted-foreground">Subtotal</span><span className="font-medium">{formatCurrency(subtotal)}</span></div>
                     <div className="flex justify-between text-xs"><span className="text-muted-foreground">Tax Estimate (5%)</span><span className="font-medium">{formatCurrency(taxEst)}</span></div>
-                    <div className="flex justify-between text-sm border-t border-border/60 pt-2 mt-1"><span className="font-semibold">Grand Total</span><span className="font-bold text-indigo-600">{formatCurrency(grandTotal)}</span></div>
+                    <div className="flex justify-between text-sm border-t pt-2 mt-1"><span className="font-semibold">Grand Total</span><span className="font-bold text-indigo-600">{formatCurrency(grandTotal)}</span></div>
                   </div>
                   {budget > 0 && (
                     <div className="space-y-2">
@@ -339,10 +339,10 @@ function NewPRDialog({ open, onClose, onSuccess }: { open: boolean; onClose: () 
               <h3 className="text-sm font-semibold flex items-center gap-2"><CheckSquare className="h-4 w-4 text-indigo-500" />Review & Submit</h3>
               <div className="grid grid-cols-4 gap-3">
                 {[ { label: 'Department', value: form.department || '—' }, { label: 'Required By', value: form.requiredDate ? formatDate(form.requiredDate) : '—' }, { label: 'Priority', value: PRIORITY_CONFIG[form.priority]?.label ?? form.priority }, { label: 'Items', value: `${rows.filter(r => r.description).length} item(s)` } ].map(({ label, value }) => (
-                  <div key={label} className="rounded-lg border border-border/60 bg-muted/20 p-3"><p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">{label}</p><p className="text-sm font-semibold mt-1">{value}</p></div>
+                  <div key={label} className="rounded-lg border bg-muted/20 p-3"><p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">{label}</p><p className="text-sm font-semibold mt-1">{value}</p></div>
                 ))}
               </div>
-              <div className="rounded-xl border border-border/60 overflow-hidden">
+              <div className="rounded-xl border overflow-hidden">
                 <div className="bg-muted/50 px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Requested Items</div>
                 <div className="divide-y divide-border/40">
                   {rows.filter(r => r.description).map((row, i) => (
@@ -352,10 +352,10 @@ function NewPRDialog({ open, onClose, onSuccess }: { open: boolean; onClose: () 
                     </div>
                   ))}
                 </div>
-                <div className="flex justify-between px-4 py-3 bg-muted/20 border-t border-border/60 text-sm font-bold"><span>Grand Total (incl. 5% tax est.)</span><span className="text-indigo-600">{formatCurrency(grandTotal)}</span></div>
+                <div className="flex justify-between px-4 py-3 bg-muted/20 border-t text-sm font-bold"><span>Grand Total (incl. 5% tax est.)</span><span className="text-indigo-600">{formatCurrency(grandTotal)}</span></div>
               </div>
               {form.notes && (
-                <div className="rounded-lg border border-border/60 bg-muted/20 p-4"><p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">Purpose</p><p className="text-sm text-foreground">{form.notes}</p></div>
+                <div className="rounded-lg border bg-muted/20 p-4"><p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">Purpose</p><p className="text-sm text-foreground">{form.notes}</p></div>
               )}
               <div className="rounded-xl border border-indigo-100 bg-indigo-50/40 p-4">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 mb-3">Approval Chain</p>
@@ -376,7 +376,7 @@ function NewPRDialog({ open, onClose, onSuccess }: { open: boolean; onClose: () 
           )}
         </div>
 
-        <div className="sticky bottom-0 border-t border-border/60 bg-white px-6 py-4 flex items-center justify-between">
+        <div className="sticky bottom-0 border-t bg-white px-6 py-4 flex items-center justify-between">
           <div className="flex gap-2">
             {step !== 'info' && <Button variant="outline" size="sm" onClick={() => setStep(step === 'review' ? 'items' : 'info')}>← Back</Button>}
             <Button variant="ghost" size="sm" onClick={handleClose}>Cancel</Button>
@@ -446,7 +446,7 @@ export function PageClient({ initialData }: { initialData: PR[] }) {
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {[ { label: 'Total PRs', value: kpis.total, icon: ClipboardList, color: 'text-purple-600', bg: 'bg-purple-50' }, { label: 'Pending Approval', value: kpis.pending, icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50', highlight: kpis.pending > 0 }, { label: 'Approved', value: kpis.approved, icon: CheckSquare, color: 'text-emerald-600', bg: 'bg-emerald-50' }, { label: 'Drafts', value: kpis.draft, icon: AlertCircle, color: 'text-gray-500', bg: 'bg-gray-50' }, { label: 'Total Value', value: formatCurrency(kpis.totalValue), icon: TrendingUp, color: 'text-blue-600', bg: 'bg-blue-50' }, ].map(({ label, value, icon: Icon, color, bg, highlight }) => (
-          <Card key={label} className={cn('border-border/60 shadow-sm', highlight ? 'ring-1 ring-amber-200' : '')}>
+          <Card key={label} className={cn(', highlight ? 'ring-1 ring-amber-200' : '')}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>

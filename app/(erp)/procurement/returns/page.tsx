@@ -7,7 +7,7 @@ type GRNListRow = { id: string; grnNumber: string; po: { vendor: { name: string 
 
 export default async function ReturnsPage() {
   const [returns, vendors, grnsList] = await Promise.all([
-    apiServer<PR[]>('/api/procurement/returns'),
+    apiServer<PR[]>('/api/procurement/purchase-returns'),
     apiServer<Vendor[]>('/api/procurement/vendors'),
     apiServer<GRNListRow[]>('/api/procurement/grns'),
   ])

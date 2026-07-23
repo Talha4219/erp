@@ -17,16 +17,16 @@ export function PageHeader({ title, description, actions, className, icon: Icon,
     <div className={cn('flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between', className)}>
       <div className="flex items-start gap-3">
         {Icon && (
-          <div className={cn('flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-muted/60', iconColor)}>
-            <Icon className="h-4.5 w-4.5" />
+          <div className={cn('flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-blue-50', iconColor)}>
+            <Icon className="h-5 w-5" />
           </div>
         )}
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-foreground">{title}</h1>
+            <h1 className="text-xl font-bold tracking-tight text-slate-800">{title}</h1>
             {badge}
           </div>
-          {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
+          {description && <p className="mt-0.5 text-sm text-slate-500">{description}</p>}
         </div>
       </div>
       {actions && <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">{actions}</div>}

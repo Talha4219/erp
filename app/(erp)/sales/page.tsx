@@ -64,7 +64,7 @@ const MODULE_SHORTCUTS = [
 function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-lg border border-border/60 bg-white px-3 py-2 shadow-lg text-xs">
+    <div className="rounded-lg border bg-white px-3 py-2 shadow-lg text-xs">
       <p className="font-semibold text-muted-foreground mb-1">{label}</p>
       <p className="font-bold text-foreground">{formatCurrency(payload[0].value)}</p>
     </div>
@@ -138,7 +138,7 @@ export default function SalesDashboardPage() {
       />
 
       {/* Sales Workflow */}
-      <Card className="border-border/60 shadow-sm">
+      <Card >
         <CardContent className="py-4 px-5">
           <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60 mb-3">Sales Workflow</p>
           <WorkflowProgress steps={salesWorkflow} />
@@ -215,7 +215,7 @@ export default function SalesDashboardPage() {
 
       {/* Revenue chart + Top Customers */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <Card className="lg:col-span-2 border-border/60 shadow-sm">
+        <Card className="lg:col-span-2">
           <CardHeader className="pb-1 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -248,7 +248,7 @@ export default function SalesDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <Star className="h-4 w-4 text-amber-500" />
@@ -286,7 +286,7 @@ export default function SalesDashboardPage() {
 
       {/* Sales Funnel + Top Selling Products */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <ClipboardList className="h-4 w-4 text-purple-500" />
@@ -314,7 +314,7 @@ export default function SalesDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <ShoppingCart className="h-4 w-4 text-orange-500" />
@@ -341,7 +341,7 @@ export default function SalesDashboardPage() {
 
       {/* Recent invoices + Orders */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <Receipt className="h-4 w-4 text-emerald-500" />
@@ -376,7 +376,7 @@ export default function SalesDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <Activity className="h-4 w-4 text-orange-500" />

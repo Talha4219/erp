@@ -30,10 +30,10 @@ export function WorkflowProgress({ steps, className, compact }: WorkflowProgress
                   step.done
                     ? 'border-emerald-500 bg-emerald-500 text-white'
                     : step.active
-                    ? 'border-indigo-500 bg-indigo-50 text-indigo-600'
+                    ? 'border-[#3B82F6] bg-blue-50 text-[#3B82F6]'
                     : step.skipped
-                    ? 'border-gray-300 bg-gray-100 text-gray-400'
-                    : 'border-gray-200 bg-white text-gray-300'
+                    ? 'border-slate-200 bg-slate-50 text-slate-400'
+                    : 'border-slate-200 bg-white text-slate-300'
                 )}
               >
                 {step.done ? (
@@ -46,7 +46,7 @@ export function WorkflowProgress({ steps, className, compact }: WorkflowProgress
                 <span className={cn(
                   'mt-1 text-center text-[10px] leading-tight max-w-[60px] whitespace-normal break-words',
                   step.done ? 'text-emerald-600 font-medium' :
-                    step.active ? 'text-indigo-600 font-semibold' : 'text-muted-foreground/60'
+                    step.active ? 'text-[#3B82F6] font-semibold' : 'text-slate-400'
                 )}>
                   {step.label}
                 </span>

@@ -119,7 +119,7 @@ function AddQuotationDialog({ open, onClose, onSuccess, vendors }: {
     <Dialog open={open} onOpenChange={o => !o && handleClose()}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
         {/* Header */}
-        <div className="sticky top-0 z-10 border-b border-border/60 bg-white px-6 py-4">
+        <div className="sticky top-0 z-10 border-b bg-white px-6 py-4">
           <div className="flex items-center justify-between mb-3">
             <div>
               <h2 className="text-base font-bold">Record Supplier Quotation</h2>
@@ -201,7 +201,7 @@ function AddQuotationDialog({ open, onClose, onSuccess, vendors }: {
                   <Plus className="h-3 w-3 mr-1" />Add Item
                 </Button>
               </div>
-              <div className="rounded-xl border border-border/60 overflow-hidden">
+              <div className="rounded-xl border overflow-hidden">
                 <div className="grid grid-cols-12 bg-muted/50 px-3 py-2 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground gap-2">
                   <span className="col-span-4">Description</span>
                   <span className="col-span-1">Qty</span>
@@ -242,7 +242,7 @@ function AddQuotationDialog({ open, onClose, onSuccess, vendors }: {
                 </div>
               </div>
               {/* Cost summary */}
-              <div className="rounded-xl border border-border/60 bg-muted/20 p-4 space-y-2 text-sm">
+              <div className="rounded-xl border bg-muted/20 p-4 space-y-2 text-sm">
                 <div className="flex justify-between text-muted-foreground"><span>Subtotal</span><span className="font-semibold text-foreground">{formatCurrency(subtotal)}</span></div>
                 <div className="flex justify-between text-muted-foreground"><span>Tax</span><span className="font-semibold text-foreground">{formatCurrency(tax)}</span></div>
                 <div className="flex justify-between border-t border-border/50 pt-2 font-bold"><span>Grand Total</span><span className="text-blue-600 text-base">{formatCurrency(subtotal + tax)}</span></div>
@@ -266,7 +266,7 @@ function AddQuotationDialog({ open, onClose, onSuccess, vendors }: {
                   </div>
                 ))}
               </div>
-              <div className="rounded-xl border border-border/60 overflow-hidden">
+              <div className="rounded-xl border overflow-hidden">
                 <div className="bg-muted/50 px-4 py-2 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Items ({rows.filter(r => r.description.trim()).length})</div>
                 {rows.filter(r => r.description.trim()).map((row, i) => (
                   <div key={i} className="flex items-center justify-between border-t border-border/30 px-4 py-2.5 text-sm">
@@ -284,7 +284,7 @@ function AddQuotationDialog({ open, onClose, onSuccess, vendors }: {
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 border-t border-border/60 bg-white px-6 py-4 flex items-center justify-between">
+        <div className="sticky bottom-0 border-t bg-white px-6 py-4 flex items-center justify-between">
           <div className="flex gap-2">
             {step !== 'info' && <Button variant="outline" size="sm" onClick={() => setStep(step === 'review' ? 'items' : 'info')}>← Back</Button>}
             <Button variant="ghost" size="sm" onClick={handleClose}>Cancel</Button>
@@ -370,7 +370,7 @@ export default function SupplierQuotationsPage() {
           { icon: CheckCircle, label: 'Awarded',         value: kpis.awarded,   cls: 'text-emerald-600', bg: 'bg-emerald-50' },
           { icon: Star,        label: 'Avg Savings',     value: '8.2%',         cls: 'text-purple-600',  bg: 'bg-purple-50' },
         ].map(({ icon: Icon, label, value, cls, bg, ring }) => (
-          <Card key={label} className={cn('border-border/60 shadow-sm', ring ? 'ring-1 ring-amber-200' : '')}>
+          <Card key={label} className={cn(', ring ? 'ring-1 ring-amber-200' : '')}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
@@ -387,7 +387,7 @@ export default function SupplierQuotationsPage() {
       {/* Analytics row */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         {/* Status distribution */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-blue-500" />Status Distribution
@@ -413,7 +413,7 @@ export default function SupplierQuotationsPage() {
         </Card>
 
         {/* Price comparison */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-purple-500" />Price Comparison
@@ -442,7 +442,7 @@ export default function SupplierQuotationsPage() {
         </Card>
 
         {/* Evaluation scores */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <Star className="h-4 w-4 text-amber-500" />Evaluation Scores
@@ -501,7 +501,7 @@ export default function SupplierQuotationsPage() {
       </div>
 
       {/* Table */}
-      <Card className="border-border/60 shadow-sm">
+      <Card >
         <div className="overflow-x-auto">
           {isLoading ? (
             <div className="space-y-2 p-4">{[...Array(4)].map((_, i) => <div key={i} className="h-12 animate-pulse rounded-lg bg-muted" />)}</div>

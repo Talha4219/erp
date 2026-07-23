@@ -37,7 +37,7 @@ export function PageClient({ initialReturns, initialVendors, initialGrnsList }: 
 
   const { data: returns = [], error: returnsError } = useQuery({
     queryKey: ['proc-returns'],
-    queryFn: () => api.get<PR[]>('/api/procurement/returns').then(r => r.data ?? []),
+    queryFn: () => api.get<PR[]>('/api/procurement/purchase-returns').then(r => r.data ?? []),
     initialData: initialReturns,
     staleTime: 30_000,
   })
@@ -65,8 +65,9 @@ export function PageClient({ initialReturns, initialVendors, initialGrnsList }: 
   const filteredGrns = grnsList.filter(g => selVendor ? g.po.vendor.name === vendors.find(v => v.id === selVendor)?.name : true)
 
   const createMutation = useMutation({
-    mutationFn: () => api.post('/api/procurement/returns', {
-      grnId: selGrn, reason, returnItems: returnItems.filter(i => i.qty > 0).map(i => ({ grnItemId: i.grnItemId, quantity: i.qty })),
+    mutationFn: () => api.post('/api/procurement/purchase-returns', {
+      vendorId: selVendor, grnId: selGrn, returnDate: new Date().toISOString(), reason, notes: '',
+      lineItems: returnItems.filter(i => i.qty > 0).map(i => ({ description: i.description, quantity: i.qty, unitPrice: 0, totalPrice: 0 })),
     }),
     onSuccess: () => { toast.success('Return created'); qc.invalidateQueries({ queryKey: ['proc-returns'] }); setShowForm(false); setFormStep('select'); setSelVendor(''); setSelGrn(''); setReason(''); setReturnItems([]) },
     onError: () => toast.error('Failed to create return'),

@@ -44,48 +44,43 @@ function VirtualizedRows<T extends object>({ columns, data, actions, getCellValu
   })
 
   return (
-    <div ref={parentRef} className="overflow-auto rounded-md border" style={{ height: '600px' }}>
-      <div style={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {columns.map((col) => (
-                <TableHead key={col.key} className={col.className}>
-                  {col.header ?? col.label}
-                </TableHead>
-              ))}
-              {actions && <TableHead className="text-right">Actions</TableHead>}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={columns.length + (actions ? 1 : 0)} className="h-24 text-center text-muted-foreground">
-                  No results found.
-                </TableCell>
-              </TableRow>
-            ) : (
-              virtualizer.getVirtualItems().map((virtualRow) => {
-                const row = data[virtualRow.index]
-                return (
-                  <TableRow
-                    key={virtualRow.key}
-                    ref={virtualizer.measureElement}
-                    data-index={virtualRow.index}
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translateY(${virtualRow.start}px)` }}
-                  >
-                    {columns.map((col) => (
-                      <TableCell key={col.key} className={cn(col.className)}>
-                        {getCellValue(row, col)}
-                      </TableCell>
-                    ))}
-                    {actions && <TableCell className="text-right">{actions(row)}</TableCell>}
-                  </TableRow>
-                )
-              })
-            )}
-          </TableBody>
-        </Table>
+    <div ref={parentRef} className="soft-card rounded-2xl overflow-auto" style={{ height: '600px' }}>
+      <div className="min-w-full inline-block">
+        <div className="flex bg-muted/50 text-xs font-medium text-muted-foreground border-b">
+          {columns.map((col) => (
+            <div key={col.key} className={cn('flex-1 px-3 py-2', col.className)}>
+              {col.header ?? col.label}
+            </div>
+          ))}
+          {actions && <div className="flex-none w-[100px] px-3 py-2 text-right">Actions</div>}
+        </div>
+        <div style={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}>
+          {data.length === 0 ? (
+            <div className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
+              No results found.
+            </div>
+          ) : (
+            virtualizer.getVirtualItems().map((virtualRow) => {
+              const row = data[virtualRow.index]
+              return (
+                <div
+                  key={virtualRow.key}
+                  ref={virtualizer.measureElement}
+                  data-index={virtualRow.index}
+                  className="absolute left-0 w-full flex items-center border-b border-border/50 bg-background hover:bg-muted/30 transition-colors"
+                  style={{ height: virtualRow.size, transform: `translateY(${virtualRow.start}px)` }}
+                >
+                  {columns.map((col) => (
+                    <div key={col.key} className={cn('flex-1 px-3 py-2 text-sm truncate', col.className)}>
+                      {getCellValue(row, col)}
+                    </div>
+                  ))}
+                  {actions && <div className="flex-none w-[100px] px-3 py-2 text-right">{actions(row)}</div>}
+                </div>
+              )
+            })
+          )}
+        </div>
       </div>
     </div>
   )
@@ -108,16 +103,16 @@ export function DataTable<T extends object>({
 
   if (error && !effectiveLoading) {
     return (
-      <div className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-red-200 dark:border-red-900">
+      <div className="flex min-h-48 flex-col items-center justify-center gap-3 soft-card rounded-2xl border-dashed border-red-200">
         <AlertTriangle className="h-8 w-8 text-red-400" />
-        <p className="text-sm font-medium text-red-600 dark:text-red-400">{error.message || 'Failed to load data'}</p>
+        <p className="text-sm font-medium text-red-500">{error.message || 'Failed to load data'}</p>
       </div>
     )
   }
 
   if (effectiveLoading) {
     return (
-      <div className="space-y-3">
+      <div className="soft-card rounded-2xl p-5 space-y-3">
         <div className="flex gap-4">
           {[...Array(columns.length)].map((_, i) => (
             <Skeleton key={i} className="h-4 w-24" />
@@ -172,7 +167,7 @@ export function DataTable<T extends object>({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border">
+      <div className="soft-card rounded-2xl overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -215,7 +210,7 @@ export function DataTable<T extends object>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
+      <div className="flex items-center justify-between text-sm text-slate-400 px-1">
         <span>
           {total === 0 ? 'No records' : `Showing ${(currentPage - 1) * pageSize + 1}–${Math.min(currentPage * pageSize, total)} of ${total}`}
         </span>

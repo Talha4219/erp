@@ -10,7 +10,7 @@ import {
   ChevronRight, Building2, LogOut, Monitor, Truck, Receipt, UserCheck,
   Warehouse, ArrowLeftRight, ClipboardList, TrendingDown, QrCode, ChevronDown,
   FileText, Banknote, Clock, GitBranch,
-  BookOpen, Layers,
+  Layers,
   FileSearch, Star, RotateCcw, CreditCard,
   Fingerprint, CheckSquare, Workflow, Briefcase, Landmark, FileArchive,
   RefreshCw, Shield, Sparkles, Pin, History, Plus, X, HelpCircle,
@@ -181,42 +181,17 @@ const navGroups: NavGroup[] = [
   },
 ]
 
-const MODULE_ACCENT: Record<string, string> = {
-  dashboard: 'bg-indigo-500',
-  pos: 'bg-amber-500',
-  crm: 'bg-violet-500',
-  customers: 'bg-blue-500',
-  sales: 'bg-emerald-500',
-  procurement: 'bg-teal-500',
-  inventory: 'bg-orange-500',
-  fulfillment: 'bg-blue-600',
-  finance: 'bg-green-500',
-  expenses: 'bg-rose-500',
-  hr: 'bg-pink-500',
-  projects: 'bg-cyan-500',
-  documents: 'bg-yellow-500',
-  reports: 'bg-purple-500',
-  insights: 'bg-sky-500',
-  workflow: 'bg-lime-500',
-  audit: 'bg-red-600',
-  settings: 'bg-gray-400',
-}
-
-// Quick-create actions (module → create URL)
 const QUICK_CREATE = [
-  { label: 'Purchase Order', href: '/procurement/purchase-orders/new', icon: ShoppingCart, color: 'text-teal-400' },
-  { label: 'Purchase Request', href: '/procurement/purchase-requests', icon: ClipboardList, color: 'text-purple-400' },
-  { label: 'Sales Order', href: '/sales/orders', icon: TrendingUp, color: 'text-emerald-400' },
-  { label: 'Sales Invoice', href: '/sales/invoices', icon: FileText, color: 'text-blue-400' },
-  { label: 'Journal Entry', href: '/finance/journal', icon: BookOpen, color: 'text-green-400' },
-  { label: 'Employee', href: '/hr/employees', icon: User, color: 'text-pink-400' },
-  { label: 'Inventory Transfer', href: '/inventory/transfers', icon: ArrowLeftRight, color: 'text-orange-400' },
-  { label: 'Fulfillment Order', href: '/fulfillment/orders', icon: Truck, color: 'text-blue-400' },
-  { label: 'Vehicle', href: '/fulfillment/vehicles', icon: Truck, color: 'text-gray-400' },
-  { label: 'Driver', href: '/fulfillment/drivers', icon: User, color: 'text-green-400' },
+  { label: 'Invoice', href: '/sales/invoices/new', icon: FileText },
+  { label: 'Sales Order', href: '/sales/orders/new', icon: TrendingUp },
+  { label: 'Purchase Order', href: '/procurement/purchase-orders/new', icon: ShoppingCart },
+  { label: 'Customer', href: '/sales/customers/new', icon: Users },
+  { label: 'Payment', href: '/sales/payments', icon: CreditCard },
+  { label: 'Expense', href: '/expenses', icon: Receipt },
+  { label: 'Transfer', href: '/inventory/transfers', icon: ArrowLeftRight },
+  { label: 'Employee', href: '/hr/employees', icon: User },
 ]
 
-// Flatten all nav items for lookup
 function allNavItems(): Array<{ href: string; label: string; icon: React.ElementType; module?: string }> {
   const items: Array<{ href: string; label: string; icon: React.ElementType; module?: string }> = []
   for (const g of navGroups) {
@@ -267,7 +242,6 @@ export function Sidebar() {
   const [pins, setPins] = useState<string[]>([])
   const [showQuickCreate, setShowQuickCreate] = useState(false)
 
-  // Load from localStorage
   useEffect(() => {
     try {
       const r = localStorage.getItem(RECENTS_KEY)
@@ -277,7 +251,6 @@ export function Sidebar() {
     } catch { /* ignore */ }
   }, [])
 
-  // Track recents
   useEffect(() => {
     if (!pathname || pathname === '/') return
     setRecents((prev) => {
@@ -329,19 +302,17 @@ export function Sidebar() {
 
   return (
     <aside
-      className={cn(
-        'relative flex flex-col text-gray-100 transition-all duration-400 ease-in-out min-h-screen',
-        'bg-[#07080c]/95 backdrop-blur-xl backdrop-saturate-150 border-r border-white/[0.06]',
-        'shadow-[2px_0_24px_-8px_rgba(0,0,0,0.4)]',
-        collapsed ? 'w-[60px]' : 'w-[240px]'
-      )}
+        className={cn(
+          'relative flex flex-col transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] min-h-screen',
+          'bg-[var(--sidebar-bg)] border-r border-slate-200/80',
+          collapsed ? 'w-[60px]' : 'w-[240px]'
+        )}
     >
-      {/* Logo + collapse */}
       <div className={cn(
-        'flex items-center border-b border-white/[0.06] h-14 flex-shrink-0',
+        'flex items-center border-b border-slate-200/80 h-14 flex-shrink-0',
         collapsed ? 'justify-center px-3' : 'px-3 gap-2.5'
       )}>
-        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/25 ring-1 ring-white/10">
+        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#3B82F6] shadow-md shadow-blue-500/20">
           {branding.logo ? (
             <img src={branding.logo} alt={branding.name} className="h-full w-full object-cover" />
           ) : (
@@ -350,56 +321,53 @@ export function Sidebar() {
         </div>
         {!collapsed && (
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-white/90 leading-none tracking-tight">{branding.name}</p>
-            <p className="text-[10px] text-gray-500 mt-0.5 font-medium">Business Suite</p>
+            <p className="truncate text-sm font-bold text-[var(--sidebar-text)] leading-none tracking-tight">{branding.name}</p>
+            <p className="text-[10px] text-[var(--sidebar-text-secondary)] mt-0.5 font-medium">Enterprise Suite</p>
           </div>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="rounded-lg p-1.5 text-gray-500 hover:text-gray-200 hover:bg-white/[0.08] transition-all duration-200 flex-shrink-0 active:scale-95"
-          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="rounded-lg p-1.5 text-[var(--sidebar-text-secondary)] hover:text-[var(--sidebar-text)]/60 hover:bg-[var(--sidebar-hover-bg)] transition-all duration-200 flex-shrink-0 active:scale-95"
         >
           {collapsed ? <ChevronRight className="h-3.5 w-3.5" /> : <ChevronLeft className="h-3.5 w-3.5" />}
         </button>
       </div>
 
-      {/* Quick Create */}
       {!collapsed && (
-        <div className="px-3 py-2.5 border-b border-white/[0.06] flex-shrink-0 relative">
+        <div className="px-3 py-2.5 border-b border-slate-200/80 flex-shrink-0 relative">
           <button
             onClick={() => setShowQuickCreate((v) => !v)}
-            className="flex w-full items-center gap-2 rounded-xl bg-white/[0.06] border border-white/[0.08] px-3 py-2 text-xs font-medium text-indigo-300 hover:bg-white/[0.1] hover:text-indigo-200 transition-all duration-200 active:scale-[0.98]"
+            className="flex w-full items-center gap-2 rounded-xl bg-white/70 border border-slate-200/80 px-3 py-2 text-xs font-medium text-[var(--sidebar-text)] hover:bg-white transition-all duration-200 active:scale-[0.98] shadow-sm"
           >
-            <Plus className="h-3.5 w-3.5" />
+            <Plus className="h-3.5 w-3.5 text-[#3B82F6]" />
             Quick Create
-            <ChevronDown className={cn('ml-auto h-3 w-3 transition-transform duration-200', showQuickCreate && 'rotate-180')} />
+            <ChevronDown className={cn('ml-auto h-3 w-3 text-[var(--sidebar-text-secondary)] transition-transform duration-200', showQuickCreate && 'rotate-180')} />
           </button>
 
-          {showQuickCreate && (
-            <div className="absolute left-3 right-3 top-full mt-1.5 z-50 rounded-2xl border border-white/[0.08] bg-[#1a1d26]/95 backdrop-blur-xl shadow-2xl shadow-black/50 overflow-hidden">
-              {QUICK_CREATE.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setShowQuickCreate(false)}
-                  className="flex items-center gap-2.5 px-3.5 py-2.5 text-[11px] text-gray-300 hover:bg-white/[0.06] hover:text-white transition-all duration-150 border-b border-white/[0.04] last:border-0"
-                >
-                  <item.icon className={cn('h-3.5 w-3.5 flex-shrink-0', item.color)} />
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          )}
+          <div className={cn(
+            'absolute left-3 right-3 top-full mt-1.5 z-50 rounded-xl bg-white border border-slate-200/80 shadow-soft-lg overflow-hidden transition-all duration-200 ease-out',
+            showQuickCreate ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-1 pointer-events-none'
+          )}>
+            {QUICK_CREATE.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setShowQuickCreate(false)}
+                className="flex items-center gap-2.5 px-3.5 py-2.5 text-[11px] text-[var(--sidebar-text-secondary)] hover:text-[var(--sidebar-text)] hover:bg-slate-50 transition-all duration-150 border-b border-slate-100 last:border-0"
+              >
+                <item.icon className="h-3.5 w-3.5 flex-shrink-0 text-[#3B82F6]" />
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 
-      {/* Nav */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden py-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
 
-        {/* Pinned */}
         {!collapsed && pinnedItems.length > 0 && (
           <div className="mb-1">
-            <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-gray-500/70 select-none flex items-center gap-1.5">
+            <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-[var(--sidebar-text-secondary)]/50 select-none flex items-center gap-1.5">
               <Pin className="h-2.5 w-2.5" /> Pinned
             </p>
             <div className="space-y-0.5 px-2">
@@ -410,8 +378,8 @@ export function Sidebar() {
                     <Link
                       href={item.href}
                       className={cn(
-                        'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150 pr-8',
-                        isActive ? 'bg-white/[0.1] text-white shadow-sm' : 'text-gray-400 hover:bg-white/[0.06] hover:text-gray-200'
+                        'flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-all duration-150 pr-8',
+                        isActive ? 'text-[var(--sidebar-active-text)] font-semibold bg-[var(--sidebar-active-bg)]' : 'text-[var(--sidebar-icon-default)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--sidebar-text)]'
                       )}
                     >
                       <item.icon className="h-3.5 w-3.5 flex-shrink-0" />
@@ -419,8 +387,7 @@ export function Sidebar() {
                     </Link>
                     <button
                       onClick={() => togglePin(item.href)}
-                      className="absolute right-1.5 top-1/2 -translate-y-1/2 hidden group-hover:flex h-5 w-5 items-center justify-center rounded text-gray-600 hover:text-amber-400 transition-colors"
-                      title="Unpin"
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 hidden group-hover:flex h-5 w-5 items-center justify-center rounded text-[var(--sidebar-text-secondary)]/40 hover:text-[#FFD60A] transition-colors"
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -428,14 +395,13 @@ export function Sidebar() {
                 )
               })}
             </div>
-            <div className="mx-3 mt-2 h-px bg-white/[0.04]" />
+            <div className="mx-3 mt-2 h-px bg-slate-200/60" />
           </div>
         )}
 
-        {/* Recents */}
         {!collapsed && recents.length > 0 && (
           <div className="mb-1">
-            <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-gray-500/70 select-none flex items-center gap-1.5">
+            <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-[var(--sidebar-text-secondary)]/50 select-none flex items-center gap-1.5">
               <History className="h-2.5 w-2.5" /> Recents
             </p>
             <div className="space-y-0.5 px-2">
@@ -448,8 +414,8 @@ export function Sidebar() {
                     <Link
                       href={href}
                       className={cn(
-                        'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150 pr-8',
-                        isActive ? 'bg-white/[0.1] text-white' : 'text-gray-500 hover:bg-white/[0.06] hover:text-gray-300'
+                        'flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-all duration-150 pr-8',
+                        isActive ? 'text-[var(--sidebar-active-text)] font-semibold bg-[var(--sidebar-active-bg)]' : 'text-[var(--sidebar-icon-default)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--sidebar-text)]/60'
                       )}
                     >
                       <item.icon className="h-3.5 w-3.5 flex-shrink-0 opacity-60" />
@@ -459,9 +425,8 @@ export function Sidebar() {
                       onClick={() => togglePin(href)}
                       className={cn(
                         'absolute right-1.5 top-1/2 -translate-y-1/2 hidden group-hover:flex h-5 w-5 items-center justify-center rounded transition-colors',
-                        pins.includes(href) ? 'text-amber-400' : 'text-gray-600 hover:text-amber-400'
+                        pins.includes(href) ? 'text-[#FFD60A]' : 'text-[var(--sidebar-text-secondary)]/40 hover:text-[#FFD60A]'
                       )}
-                      title={pins.includes(href) ? 'Unpin' : 'Pin'}
                     >
                       <Pin className="h-3 w-3" />
                     </button>
@@ -469,27 +434,25 @@ export function Sidebar() {
                 )
               })}
             </div>
-            <div className="mx-3 mt-2 h-px bg-white/[0.04]" />
+            <div className="mx-3 mt-2 h-px bg-slate-200/60" />
           </div>
         )}
 
-        {/* Main nav groups */}
         {visibleGroups.map((group, gi) => (
           <div key={group.label} className={cn(gi > 0 && 'mt-1')}>
             {!collapsed && (
-              <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-gray-500/70 select-none">
+              <p className="px-3 pb-1 pt-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-[var(--sidebar-text-secondary)]/50 select-none">
                 {group.label}
               </p>
             )}
             {collapsed && gi > 0 && (
-              <div className="mx-3 my-2 h-px bg-white/[0.04]" />
+              <div className="mx-3 my-2 h-px bg-slate-200/60" />
             )}
 
             <div className="space-y-0.5 px-2">
               {group.items.map((item) => {
                 const isGroupActive = pathname === item.href || pathname.startsWith(item.href + '/')
                 const isExpanded = expandedGroups.has(item.href)
-                const accent = MODULE_ACCENT[item.module ?? ''] ?? 'bg-indigo-500'
 
                 if (item.children) {
                   if (collapsed) {
@@ -498,8 +461,8 @@ export function Sidebar() {
                         key={item.href}
                         href={item.children[0].href}
                         className={cn(
-                          'flex items-center justify-center rounded-lg p-2 transition-all duration-150',
-                          isGroupActive ? 'bg-white/[0.1] text-white' : 'text-gray-400 hover:bg-white/[0.06] hover:text-gray-200'
+                          'flex items-center justify-center rounded-xl p-2 transition-all duration-150',
+                          isGroupActive ? 'text-[var(--sidebar-active-text)] bg-[var(--sidebar-active-bg)]' : 'text-[var(--sidebar-icon-default)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--sidebar-text)]'
                         )}
                         title={item.label}
                       >
@@ -513,14 +476,13 @@ export function Sidebar() {
                       <button
                         onClick={() => toggleGroup(item.href)}
                         className={cn(
-                          'flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150',
-                          isGroupActive ? 'bg-white/[0.1] text-white shadow-sm' : 'text-gray-400 hover:bg-white/[0.06] hover:text-gray-200'
+                          'flex w-full items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-all duration-150',
+                          isGroupActive ? 'text-[var(--sidebar-active-text)] font-semibold bg-[var(--sidebar-active-bg)]' : 'text-[var(--sidebar-icon-default)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--sidebar-text)]'
                         )}
                       >
-                        {isGroupActive && <span className={cn('w-1 h-1 rounded-full flex-shrink-0', accent)} />}
-                        <item.icon className={cn('h-4 w-4 flex-shrink-0', !isGroupActive && 'ml-3')} />
+                        <item.icon className={cn('h-4 w-4 flex-shrink-0')} />
                         <span className="flex-1 text-left truncate">{item.label}</span>
-                        <ChevronDown className={cn('h-3 w-3 flex-shrink-0 text-gray-500 transition-transform duration-200', isExpanded && 'rotate-180')} />
+                        <ChevronDown className={cn('h-3 w-3 flex-shrink-0 text-[var(--sidebar-icon-default)]/50 transition-transform duration-200', isExpanded && 'rotate-180')} />
                       </button>
 
                       <div
@@ -530,7 +492,7 @@ export function Sidebar() {
                         )}
                       >
                         <div className="overflow-hidden">
-                          <div className="ml-3 mt-0.5 space-y-0.5 border-l border-white/[0.06] pl-2.5">
+                          <div className="ml-3 mt-0.5 space-y-0.5 border-l border-border pl-2.5">
                             {item.children.map((child) => {
                               const childActive = pathname === child.href
                               return (
@@ -538,8 +500,8 @@ export function Sidebar() {
                                   <Link
                                     href={child.href}
                                     className={cn(
-                                      'flex items-center gap-2 rounded-lg px-2 py-1.5 text-[11px] transition-all duration-150 pr-7',
-                                      childActive ? 'bg-white/[0.08] text-white font-medium' : 'text-gray-500 hover:bg-white/[0.06] hover:text-gray-300'
+                                      'flex items-center gap-2 rounded-xl px-2 py-1.5 text-[11px] transition-all duration-150 pr-7',
+                                      childActive ? 'text-[var(--sidebar-active-text)] font-semibold bg-[var(--sidebar-active-bg)]' : 'text-[var(--sidebar-icon-default)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--sidebar-text)]'
                                     )}
                                   >
                                     <child.icon className="h-3 w-3 flex-shrink-0" />
@@ -549,9 +511,8 @@ export function Sidebar() {
                                     onClick={() => togglePin(child.href)}
                                     className={cn(
                                       'absolute right-1.5 top-1/2 -translate-y-1/2 hidden group-hover:flex h-4 w-4 items-center justify-center rounded transition-colors',
-                                      pins.includes(child.href) ? 'text-amber-400' : 'text-gray-600 hover:text-amber-400'
+                                      pins.includes(child.href) ? 'text-[#FFD60A]' : 'text-[var(--sidebar-text-secondary)]/40 hover:text-[#FFD60A]'
                                     )}
-                                    title={pins.includes(child.href) ? 'Unpin' : 'Pin'}
                                   >
                                     <Pin className="h-2.5 w-2.5" />
                                   </button>
@@ -572,15 +533,12 @@ export function Sidebar() {
                       href={item.href}
                       title={collapsed ? item.label : undefined}
                       className={cn(
-                        'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150',
-                        isActive ? 'bg-white/[0.1] text-white shadow-sm' : 'text-gray-400 hover:bg-white/[0.06] hover:text-gray-200',
-                        collapsed ? 'justify-center px-2' : !isActive && 'pr-8'
+                        'flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-all duration-150',
+                        isActive ? 'text-[var(--sidebar-active-text)] font-semibold bg-[var(--sidebar-active-bg)]' : 'text-[var(--sidebar-icon-default)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--sidebar-text)]',
+                        collapsed ? 'justify-center px-2' : ''
                       )}
                     >
-                      {isActive && !collapsed && (
-                        <span className={cn('w-1 h-1 rounded-full flex-shrink-0', accent)} />
-                      )}
-                      <item.icon className={cn('h-4 w-4 flex-shrink-0', isActive || collapsed ? '' : 'ml-3')} />
+                      <item.icon className={cn('h-4 w-4 flex-shrink-0')} />
                       {!collapsed && <span className="truncate">{item.label}</span>}
                     </Link>
                     {!collapsed && (
@@ -588,9 +546,8 @@ export function Sidebar() {
                         onClick={() => togglePin(item.href)}
                         className={cn(
                           'absolute right-1.5 top-1/2 -translate-y-1/2 hidden group-hover:flex h-5 w-5 items-center justify-center rounded transition-colors',
-                          pins.includes(item.href) ? 'text-amber-400' : 'text-gray-600 hover:text-amber-400'
+                          pins.includes(item.href) ? 'text-[#FFD60A]' : 'text-[var(--sidebar-text-secondary)]/40 hover:text-[#FFD60A]'
                         )}
-                        title={pins.includes(item.href) ? 'Unpin' : 'Pin'}
                       >
                         <Pin className="h-3 w-3" />
                       </button>
@@ -603,38 +560,36 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* User section */}
-      <div className="border-t border-white/[0.06] p-2 flex-shrink-0">
+      <div className="border-t border-slate-200/80 p-2 flex-shrink-0">
         {collapsed ? (
           <button
             onClick={() => signOut({ callbackUrl: '/login' })}
-            className="flex w-full items-center justify-center rounded-lg p-2 text-gray-500 hover:text-white hover:bg-white/[0.06] transition-all duration-150 active:scale-95"
-            title="Sign out"
+            className="flex w-full items-center justify-center rounded-xl p-2 text-[var(--sidebar-text-secondary)] hover:text-[var(--sidebar-text)] hover:bg-[var(--sidebar-hover-bg)] transition-all duration-150 active:scale-95"
           >
             <LogOut className="h-4 w-4" />
           </button>
         ) : (
-          <div className="rounded-xl bg-white/[0.04] backdrop-blur-xl border border-white/[0.06] p-2.5">
+          <div className="rounded-xl bg-white/70 border border-slate-200/80 p-2.5 shadow-sm">
             <div className="flex items-center gap-2.5 mb-2">
-              <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-[10px] font-bold text-white shadow-lg shadow-indigo-500/20 ring-1 ring-white/10">
+              <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#3B82F6] text-[10px] font-bold text-white shadow-md shadow-blue-500/20">
                 {getInitials(userName)}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold text-white/90 truncate leading-none tracking-tight">{userName}</p>
-                <p className="text-[10px] text-gray-500 truncate mt-0.5 font-medium">{userRole ? ROLE_LABELS[userRole] : ''}</p>
+                <p className="text-xs font-semibold text-[var(--sidebar-text)] truncate leading-none tracking-tight">{userName}</p>
+                <p className="text-[10px] text-[var(--sidebar-text-secondary)] truncate mt-0.5 font-medium">{userRole ? ROLE_LABELS[userRole] : ''}</p>
               </div>
             </div>
             <div className="flex gap-1.5">
               <Link
                 href="/dashboard"
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-medium text-gray-400 hover:text-white hover:bg-white/[0.06] transition-all duration-150 active:scale-95"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-medium text-[var(--sidebar-text-secondary)] hover:text-[var(--sidebar-text)] hover:bg-[var(--sidebar-hover-bg)] transition-all duration-150 active:scale-95"
               >
                 <User className="h-3 w-3" />
                 Profile
               </Link>
               <button
                 onClick={() => signOut({ callbackUrl: '/login' })}
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-medium text-gray-400 hover:text-white hover:bg-white/[0.06] transition-all duration-150 active:scale-95"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-medium text-[var(--sidebar-text-secondary)] hover:text-[var(--sidebar-text)] hover:bg-[var(--sidebar-hover-bg)] transition-all duration-150 active:scale-95"
               >
                 <LogOut className="h-3 w-3" />
                 Sign out

@@ -167,7 +167,7 @@ export default function AttendancePage() {
       </div>
 
       {/* Monthly trend */}
-      <Card className="border-border/60 shadow-sm">
+      <Card >
         <CardHeader className="pb-2 pt-4 px-5">
           <CardTitle className="text-sm font-semibold flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-emerald-500" />Attendance Rate Trend — {selDate.toLocaleString('default', { month: 'long', year: 'numeric' })}

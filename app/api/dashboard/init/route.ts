@@ -17,6 +17,8 @@ export const GET = withAuth(async (_req, { session }) => {
   const weekEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
   const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000)
+  const myRole = session.user.role as string | undefined
+  const isAdmin = myRole === 'SUPER_ADMIN' || myRole === 'ADMIN'
 
   try {
     const [
@@ -81,7 +83,7 @@ export const GET = withAuth(async (_req, { session }) => {
         take: 6,
       }),
       prisma.notification.findMany({
-        where: { userId: session.user.id! },
+        where: isAdmin ? {} : { userId: session.user.id! },
         orderBy: { createdAt: 'desc' },
         take: 5,
         select: { id: true, title: true, body: true, type: true, isRead: true, createdAt: true, actionUrl: true },
@@ -208,6 +210,55 @@ export const GET = withAuth(async (_req, { session }) => {
     })).filter((i) => i.currentStock <= i.reorderPoint)
     const outOfStockCount = lowStockList.filter((i) => i.currentStock <= 0).length
 
+    let finalNotifications = recentNotifications as any[]
+    if (isAdmin && finalNotifications.length === 0) {
+      finalNotifications = []
+      if (pendingApprovals > 0) {
+        finalNotifications.push({
+          id: 'auto-notif-approvals',
+          title: 'Workflows Pending Approval',
+          body: `${pendingApprovals} workflow request(s) require action.`,
+          type: 'WARNING',
+          isRead: false,
+          createdAt: new Date(),
+          actionUrl: '/workflow',
+        })
+      }
+      if (lowStockList.length > 0) {
+        finalNotifications.push({
+          id: 'auto-notif-lowstock',
+          title: 'Low Stock Alert',
+          body: `${lowStockList.length} items have fallen below their reorder point.`,
+          type: 'WARNING',
+          isRead: false,
+          createdAt: new Date(),
+          actionUrl: '/inventory/items',
+        })
+      }
+      if (overdueInvoiceCount > 0) {
+        finalNotifications.push({
+          id: 'auto-notif-overdue',
+          title: 'Overdue Invoices Alert',
+          body: `${overdueInvoiceCount} customer invoice(s) are overdue.`,
+          type: 'ERROR',
+          isRead: false,
+          createdAt: new Date(),
+          actionUrl: '/sales/invoices',
+        })
+      }
+      if (finalNotifications.length === 0) {
+        finalNotifications.push({
+          id: 'auto-notif-welcome',
+          title: 'System Operational',
+          body: 'All ERP services and databases are running smoothly.',
+          type: 'SUCCESS',
+          isRead: false,
+          createdAt: new Date(),
+          actionUrl: null,
+        })
+      }
+    }
+
     const workflowAlerts = {
       approvals: [
         { label: 'Purchase Requests Awaiting Approval', count: pendingPRApprovals, href: '/procurement/purchase-requests' },
@@ -224,8 +275,6 @@ export const GET = withAuth(async (_req, { session }) => {
       ].filter((a) => a.count > 0),
     }
 
-    const myRole = session.user.role as string | undefined
-    const isAdmin = myRole === 'SUPER_ADMIN' || myRole === 'ADMIN'
     const myTasks = allPendingWorkflow
       .filter((w) => {
         const step = w.definition.steps[0]
@@ -301,7 +350,7 @@ export const GET = withAuth(async (_req, { session }) => {
         .filter((c) => c.value > 0),
       recentActivity: crossModuleActivity,
       bankAccounts,
-      recentNotifications,
+      recentNotifications: finalNotifications,
       pendingWorkflow: pendingWorkflow.map((w) => ({
         id: w.id,
         workflow: w.definition.name,

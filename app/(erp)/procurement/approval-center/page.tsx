@@ -178,9 +178,9 @@ function DetailPanel({
   }
 
   return (
-    <div className="flex flex-col h-full rounded-xl border border-border/60 bg-white shadow-sm overflow-hidden">
+    <div className="flex flex-col h-full rounded-xl border bg-white shadow-sm overflow-hidden">
       {/* Panel header */}
-      <div className="border-b border-border/60 bg-gradient-to-r from-indigo-50 to-purple-50 px-5 py-4">
+      <div className="border-b bg-gradient-to-r from-indigo-50 to-purple-50 px-5 py-4">
         <div className="flex items-start justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -505,7 +505,7 @@ export default function ApprovalCenterPage() {
           { icon: AlertTriangle,label: 'Overdue',         value: kpis.overdue,       color: 'text-red-600', bg: 'bg-red-50', ring: kpis.overdue > 0 },
           { icon: Zap,         label: 'Avg Wait Time',   value: `${kpis.avgHrs}h`,  color: 'text-blue-600', bg: 'bg-blue-50' },
         ].map(({ icon: Icon, label, value, color, bg, ring }) => (
-          <Card key={label} className={cn('border-border/60 shadow-sm', ring ? 'ring-1 ring-amber-200' : '')}>
+          <Card key={label} className={cn(', ring ? 'ring-1 ring-amber-200' : '')}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
@@ -579,7 +579,7 @@ export default function ApprovalCenterPage() {
 
           {/* ── Main split panel ── */}
           {queue.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 py-20 text-center">
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed py-20 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 mb-4">
                 <CheckCircle className="h-8 w-8 text-emerald-500" />
               </div>
@@ -591,7 +591,7 @@ export default function ApprovalCenterPage() {
 
               {/* Queue */}
               <div className={cn(selectedItem ? 'lg:col-span-3' : 'col-span-1')}>
-                <Card className="border-border/60 shadow-sm">
+                <Card >
                   {/* Table header */}
                   <div className="flex items-center gap-3 border-b border-border/50 bg-muted/30 px-4 py-2.5">
                     <input
@@ -712,7 +712,7 @@ export default function ApprovalCenterPage() {
                     />
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 py-16 text-center h-full min-h-64">
+                  <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center h-full min-h-64">
                     <MessageSquare className="h-8 w-8 text-muted-foreground/20 mb-3" />
                     <p className="text-sm font-medium text-muted-foreground">Select an item</p>
                     <p className="text-xs text-muted-foreground/60 mt-0.5">Click any row to review details</p>
@@ -726,7 +726,7 @@ export default function ApprovalCenterPage() {
 
       {/* ── History Tab ── */}
       {viewTab === 'history' && (
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <History className="h-4 w-4 text-muted-foreground" />

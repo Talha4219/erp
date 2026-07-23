@@ -31,7 +31,7 @@ export const GET = withAuth(async (req: NextRequest) => {
       return NextResponse.json({ success: true, data: result })
     }
 
-    const where: Record<string, unknown> = { itemId: { not: null } }
+    const where: Record<string, unknown> = {}
     if (itemId) where.itemId = itemId
     if (expiryDays) {
       const cutoff = new Date()

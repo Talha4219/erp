@@ -280,13 +280,14 @@ export function CrudListPage<T extends { id: string } & Record<string, any>>({
       />
 
       {(searchFields?.length || filters.length > 0) && (
-        <div className="flex gap-3 flex-wrap">
+        <div className="soft-card rounded-2xl p-4">
+          <div className="flex gap-3 flex-wrap">
           {searchFields != null && searchFields.length > 0 && (
             <Input
               placeholder={searchPlaceholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-56"
+              className="w-56 rounded-xl border-slate-200/80"
             />
           )}
           {filters.map((f) => {
@@ -297,7 +298,7 @@ export function CrudListPage<T extends { id: string } & Record<string, any>>({
                   type="date"
                   value={filterValues[f.key] ?? ''}
                   onChange={(e) => setFilter(f.key, e.target.value)}
-                  className="w-40"
+                  className="w-40 rounded-xl border-slate-200/80"
                 />
               )
             }
@@ -308,7 +309,7 @@ export function CrudListPage<T extends { id: string } & Record<string, any>>({
                 value={filterValues[f.key] ?? ''}
                 onValueChange={(v) => setFilter(f.key, v)}
               >
-                <SelectTrigger className="w-40">
+                <SelectTrigger className="w-40 rounded-xl border-slate-200/80">
                   <SelectValue placeholder={`All ${f.label}`} />
                 </SelectTrigger>
                 <SelectContent>
@@ -323,10 +324,11 @@ export function CrudListPage<T extends { id: string } & Record<string, any>>({
             )
           })}
           {hasFilters && (
-            <Button variant="outline" size="sm" onClick={clearFilters}>
+            <Button variant="outline" size="sm" onClick={clearFilters} className="rounded-xl">
               <X className="h-4 w-4 mr-1" />Clear
             </Button>
           )}
+          </div>
         </div>
       )}
 

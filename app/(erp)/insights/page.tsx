@@ -104,7 +104,7 @@ function ChartTooltip({ active, payload, label, currency }: {
 }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-lg border border-border/60 bg-white px-3 py-2 shadow-lg text-xs">
+    <div className="rounded-lg border bg-white px-3 py-2 shadow-lg text-xs">
       {label && <p className="font-semibold mb-1">{label}</p>}
       {payload.map(p => (
         <div key={p.name} className="flex items-center gap-1.5">
@@ -232,7 +232,7 @@ export default function InsightsPage() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
 
         {/* 12-Month Revenue Trend */}
-        <Card className="lg:col-span-2 border-border/60 shadow-sm">
+        <Card className="lg:col-span-2">
           <CardHeader className="pb-1 pt-4 px-5">
             <div className="flex items-center justify-between">
               <div>
@@ -291,7 +291,7 @@ export default function InsightsPage() {
         </Card>
 
         {/* HR Snapshot */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-1.5">
               <Users className="h-3.5 w-3.5 text-pink-500" />
@@ -339,7 +339,7 @@ export default function InsightsPage() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
 
         {/* Monthly Orders Comparison */}
-        <Card className="lg:col-span-2 border-border/60 shadow-sm">
+        <Card className="lg:col-span-2">
           <CardHeader className="pb-1 pt-4 px-5">
             <div className="flex items-center justify-between">
               <div>
@@ -385,7 +385,7 @@ export default function InsightsPage() {
         </Card>
 
         {/* Top Vendors */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-1 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-1.5">
               <Globe className="h-3.5 w-3.5 text-teal-500" />
@@ -440,7 +440,7 @@ export default function InsightsPage() {
       </div>
 
       {/* Cross-Module Health Summary */}
-      <Card className="border-border/60 shadow-sm">
+      <Card >
         <CardHeader className="pb-2 pt-4 px-5">
           <CardTitle className="text-sm font-semibold flex items-center gap-1.5">
             <PieIcon className="h-3.5 w-3.5 text-sky-500" />

@@ -86,7 +86,7 @@ export default function PurchaseInvoiceDashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold">Invoice Status Distribution</CardTitle></CardHeader>
           <CardContent className="px-5 pb-4">
             {statusData.length === 0 ? <p className="py-10 text-center text-sm text-muted-foreground">No invoices yet.</p> : (
@@ -113,7 +113,7 @@ export default function PurchaseInvoiceDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold">Accounts Payable Trend</CardTitle></CardHeader>
           <CardContent className="px-5 pb-4">
             <ResponsiveContainer width="100%" height={220}>
@@ -132,7 +132,7 @@ export default function PurchaseInvoiceDashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold">Invoice Aging Analysis</CardTitle></CardHeader>
           <CardContent className="px-5 pb-4">
             <ResponsiveContainer width="100%" height={200}>
@@ -151,7 +151,7 @@ export default function PurchaseInvoiceDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold">Recent Invoices</CardTitle></CardHeader>
           <CardContent className="px-5 pb-4 space-y-1">
             {(d?.recentInvoices ?? []).length === 0 ? <p className="py-10 text-center text-sm text-muted-foreground">No invoices yet.</p> : (d?.recentInvoices ?? []).map(inv => (

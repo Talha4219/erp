@@ -64,7 +64,7 @@ const LEAVE_BADGE: Record<string, 'secondary' | 'warning' | 'success' | 'destruc
 function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-lg border border-border/60 bg-white px-3 py-2 shadow-lg text-xs">
+    <div className="rounded-lg border bg-white px-3 py-2 shadow-lg text-xs">
       <p className="font-semibold text-muted-foreground mb-1">{label}</p>
       <p className="font-bold text-foreground">{formatCurrency(payload[0].value)}</p>
     </div>
@@ -194,7 +194,7 @@ export default function HRPage() {
       {/* Today's attendance + Department distribution */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         {/* Attendance */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -235,7 +235,7 @@ export default function HRPage() {
         </Card>
 
         {/* Department distribution */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <Building className="h-4 w-4 text-indigo-500" />
@@ -267,7 +267,7 @@ export default function HRPage() {
         </Card>
 
         {/* Payroll trend */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-1 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-pink-500" />
@@ -299,7 +299,7 @@ export default function HRPage() {
 
       {/* Recent joinees + Pending leaves */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <UserCheck className="h-4 w-4 text-blue-500" />
@@ -332,7 +332,7 @@ export default function HRPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <Calendar className="h-4 w-4 text-amber-500" />

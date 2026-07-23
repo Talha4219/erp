@@ -676,7 +676,7 @@ export default function SettingsPage() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {SETTINGS_CATEGORIES.map((c) => (
               <button key={c.value} onClick={() => setActiveTab(c.value)} className="text-left">
-                <Card className="h-full border-border/60 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+                <Card className="h-full transition-all hover:border-primary/40 hover:shadow-md">
                   <CardContent className="flex flex-col gap-2 pt-4">
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted">
                       <c.icon className="h-4 w-4 text-muted-foreground" />
@@ -695,8 +695,8 @@ export default function SettingsPage() {
             <CardHeader><CardTitle>Company Information</CardTitle></CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit((d) => settingsMutation.mutate(d))} className="space-y-4">
-                <div className="flex items-center gap-4 rounded-lg border border-border/60 bg-muted/20 p-3">
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border/60 bg-white">
+                <div className="flex items-center gap-4 rounded-lg border bg-muted/20 p-3">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-white">
                     {watch('logo') ? (
                       <img src={watch('logo')} alt="Logo preview" className="h-full w-full object-cover" />
                     ) : (

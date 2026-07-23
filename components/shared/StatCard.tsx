@@ -16,14 +16,14 @@ type StatCardProps = {
 
 export function StatCard({
   title, value, change, changeType = 'neutral',
-  icon: Icon, iconColor = 'text-primary', description, urgent, onClick, accent,
+  icon: Icon, iconColor = 'text-[#3B82F6]', description, urgent, onClick, accent,
 }: StatCardProps) {
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-xl border bg-white p-4 shadow-sm transition-all duration-200',
-        urgent ? 'border-red-200 bg-red-50/60' : 'border-border/60 hover:border-border hover:shadow-md',
-        onClick && 'cursor-pointer',
+        'group relative overflow-hidden soft-card soft-card-hover rounded-2xl p-5',
+        urgent && 'ring-1 ring-red-200',
+        onClick && 'cursor-pointer select-none',
       )}
       onClick={onClick}
     >
@@ -31,27 +31,30 @@ export function StatCard({
 
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70 truncate">{title}</p>
-          <p className={cn('mt-1.5 text-2xl font-bold leading-none tracking-tight', urgent && 'text-red-700')}>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 truncate">{title}</p>
+          <p className={cn('mt-1.5 text-2xl font-bold leading-none tracking-tight text-slate-800', urgent && 'text-red-500')}>
             {value}
           </p>
           {(change || description) && (
-            <div className="mt-1.5 flex items-center gap-1">
-              {changeType === 'positive' && <ArrowUpRight className="h-3 w-3 text-emerald-500 flex-shrink-0" />}
-              {changeType === 'negative' && <ArrowDownRight className="h-3 w-3 text-red-500 flex-shrink-0" />}
-              {changeType === 'neutral' && change && <Minus className="h-3 w-3 text-muted-foreground/50 flex-shrink-0" />}
+            <div className="mt-2 flex items-center gap-1">
+              {changeType === 'positive' && <ArrowUpRight className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0" />}
+              {changeType === 'negative' && <ArrowDownRight className="h-3.5 w-3.5 text-red-500 flex-shrink-0" />}
+              {changeType === 'neutral' && change && <Minus className="h-3.5 w-3.5 text-slate-300 flex-shrink-0" />}
               <p className={cn(
-                'text-[11px] truncate',
-                changeType === 'positive' ? 'text-emerald-600 font-medium' :
-                  changeType === 'negative' ? 'text-red-600 font-medium' : 'text-muted-foreground'
+                'text-[11px] font-medium truncate',
+                changeType === 'positive' ? 'text-emerald-600' :
+                  changeType === 'negative' ? 'text-red-500' : 'text-slate-400'
               )}>
                 {change ?? description}
               </p>
             </div>
           )}
         </div>
-        <div className={cn('flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-muted/50', urgent && 'bg-red-100')}>
-          <Icon className={cn('h-4.5 w-4.5', urgent ? 'text-red-600' : iconColor)} />
+        <div className={cn(
+          'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-110',
+          urgent ? 'bg-red-50 text-red-500' : 'bg-blue-50 text-[#3B82F6]',
+        )}>
+          <Icon className={cn('h-5 w-5', !urgent && iconColor)} />
         </div>
       </div>
     </div>

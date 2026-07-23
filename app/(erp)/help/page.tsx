@@ -157,7 +157,7 @@ export default function HelpPage() {
           {filtered.length === 0 ? (
             <p className="py-10 text-center text-sm text-muted-foreground">No matches for &ldquo;{query}&rdquo;.</p>
           ) : filtered.map(s => (
-            <Card key={s.id} id={s.id} className="scroll-mt-4 border-border/60 shadow-sm">
+            <Card key={s.id} id={s.id} className="scroll-mt-4">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <s.icon className="h-4.5 w-4.5 text-blue-600" />{s.title}

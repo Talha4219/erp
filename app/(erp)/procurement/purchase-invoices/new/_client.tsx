@@ -151,7 +151,7 @@ function PageContentForm(props: {
   return (
     <div className="space-y-5">
       {/* Sticky wizard header */}
-      <div className="sticky top-0 z-10 -mx-4 border-b border-border/60 bg-background/95 backdrop-blur px-4 py-3">
+      <div className="sticky top-0 z-10 -mx-4 border-b bg-background/95 backdrop-blur px-4 py-3">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
@@ -188,7 +188,7 @@ function PageContentForm(props: {
       {/* Step 0: Supplier Info */}
       {step === 0 && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Building2 className="h-4 w-4 text-blue-500" />Supplier Information</CardTitle></CardHeader>
             <CardContent className="px-5 pb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="col-span-2 space-y-1.5">
@@ -237,7 +237,7 @@ function PageContentForm(props: {
       {/* Step 1: Reference Documents */}
       {step === 1 && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold flex items-center gap-2"><FileText className="h-4 w-4 text-purple-500" />Reference Documents</CardTitle></CardHeader>
             <CardContent className="px-5 pb-4 space-y-3">
               <div className="space-y-1.5">
@@ -276,7 +276,7 @@ function PageContentForm(props: {
           </Card>
 
           {poDetail && (
-            <Card className="border-border/60 shadow-sm">
+            <Card >
               <CardHeader className="pb-2 pt-4 px-5 flex-row items-center justify-between">
                 <CardTitle className="text-sm font-semibold">PO Summary — {poDetail.poNumber}</CardTitle>
                 <Button size="sm" variant="outline" className="h-7 text-xs" onClick={loadItemsFromPO}>Load Items from PO</Button>
@@ -295,7 +295,7 @@ function PageContentForm(props: {
       {/* Step 2: Items */}
       {step === 2 && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <Card className="lg:col-span-2 border-border/60 shadow-sm">
+          <Card className="lg:col-span-2">
             <CardHeader className="pb-2 pt-4 px-5 flex-row items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2"><ListChecks className="h-4 w-4 text-emerald-500" />Invoice Items</CardTitle>
               <Button size="sm" variant="outline" className="h-7 text-xs" onClick={addLine}><Plus className="mr-1 h-3 w-3" />Add Line</Button>
@@ -354,7 +354,7 @@ function PageContentForm(props: {
             </CardContent>
           </Card>
 
-          <Card className="border-border/60 shadow-sm sticky top-28 self-start">
+          <Card className="sticky top-28 self-start">
             <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold">Cost Summary</CardTitle></CardHeader>
             <CardContent className="px-5 pb-5 space-y-2">
               {[
@@ -371,14 +371,14 @@ function PageContentForm(props: {
       {/* Step 3: Tax & Charges */}
       {step === 3 && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Receipt className="h-4 w-4 text-amber-500" />Tax &amp; Charges</CardTitle></CardHeader>
             <CardContent className="px-5 pb-4 space-y-3">
               <div className="space-y-1.5"><Label className="text-xs font-semibold">Shipping Charges</Label><Input type="number" step="0.01" className="h-8 text-xs" value={shippingCharges} onChange={e => setShippingCharges(e.target.value)} /></div>
               <div className="space-y-1.5"><Label className="text-xs font-semibold">Notes</Label><Textarea className="min-h-[80px] text-xs" value={notes} onChange={e => setNotes(e.target.value)} placeholder="Internal notes about this invoice…" /></div>
             </CardContent>
           </Card>
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold">Cost Summary</CardTitle></CardHeader>
             <CardContent className="px-5 pb-4 space-y-2">
               {[
@@ -395,7 +395,7 @@ function PageContentForm(props: {
       {/* Step 4: Verify & Submit */}
       {step === 4 && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-blue-500" />Verification</CardTitle></CardHeader>
             <CardContent className="px-5 pb-4 space-y-3">
               {poDetail ? (
@@ -416,7 +416,7 @@ function PageContentForm(props: {
               <div className="space-y-1.5"><Label className="text-xs font-semibold">Finance Notes</Label><Textarea className="min-h-[70px] text-xs" value={financeNotes} onChange={e => setFinanceNotes(e.target.value)} placeholder="Notes for finance/approval…" /></div>
             </CardContent>
           </Card>
-          <Card className="border-border/60 shadow-sm">
+          <Card >
             <CardHeader className="pb-2 pt-4 px-5"><CardTitle className="text-sm font-semibold">Invoice Summary</CardTitle></CardHeader>
             <CardContent className="px-5 pb-4 space-y-2">
               {[
@@ -432,7 +432,7 @@ function PageContentForm(props: {
       )}
 
       {/* Sticky footer */}
-      <div className="sticky bottom-0 -mx-4 flex items-center justify-between gap-3 border-t border-border/60 bg-background/95 backdrop-blur px-4 py-3">
+      <div className="sticky bottom-0 -mx-4 flex items-center justify-between gap-3 border-t bg-background/95 backdrop-blur px-4 py-3">
         <Button type="button" variant="outline" className="text-xs h-8" onClick={() => step > 0 ? setStep(s => s - 1) : router.back()}>
           {step === 0 ? 'Cancel' : '← Back'}
         </Button>

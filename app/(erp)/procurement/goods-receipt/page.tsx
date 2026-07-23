@@ -101,7 +101,7 @@ export default function GoodsReceiptPage() {
           { Icon: Truck,       label: 'Total GRNs',       value: grns.length,                                                            cls: 'text-purple-600',  bg: 'bg-purple-50' },
           { Icon: TrendingUp,  label: 'Receiving Value',  value: analytics ? formatCurrency(analytics.kpis.receivingValue) : '—',        cls: 'text-slate-700',   bg: 'bg-slate-50' },
         ].map(({ Icon, label, value, cls, bg }) => (
-          <Card key={label} className="border-border/60 shadow-sm">
+          <Card key={label} >
             <CardContent className="p-3.5">
               <div className={cn('mb-2 inline-flex h-7 w-7 items-center justify-center rounded-lg', bg)}>
                 <Icon className={cn('h-3.5 w-3.5', cls)} />
@@ -116,7 +116,7 @@ export default function GoodsReceiptPage() {
       {/* ── Analytics row ── */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* Daily receiving trend */}
-        <Card className="lg:col-span-2 border-border/60 shadow-sm">
+        <Card className="lg:col-span-2">
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-emerald-500" />Daily Receiving Trend (Last 7 Days)
@@ -145,7 +145,7 @@ export default function GoodsReceiptPage() {
         </Card>
 
         {/* Receipt status distribution */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <Package className="h-4 w-4 text-blue-500" />Receipt Status
@@ -176,7 +176,7 @@ export default function GoodsReceiptPage() {
       </div>
 
       {/* ── Supplier quality ── */}
-      <Card className="border-border/60 shadow-sm">
+      <Card >
         <CardHeader className="pb-2 pt-4 px-5">
           <CardTitle className="text-sm font-semibold flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-emerald-500" />Supplier Quality Performance
@@ -238,7 +238,7 @@ export default function GoodsReceiptPage() {
       </div>
 
       {/* ── GRN Table ── */}
-      <Card className="border-border/60 shadow-sm">
+      <Card >
         <CardContent className="p-0">
           {isLoading ? (
             <div className="space-y-2 p-4">

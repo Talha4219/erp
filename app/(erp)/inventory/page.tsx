@@ -60,7 +60,7 @@ const CAT_COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#14b
 function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ name: string; value: number; color: string }>; label?: string }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-lg border border-border/60 bg-white px-3 py-2 shadow-lg text-xs">
+    <div className="rounded-lg border bg-white px-3 py-2 shadow-lg text-xs">
       {label && <p className="font-semibold text-muted-foreground mb-1">{label}</p>}
       {payload.map((p) => (
         <div key={p.name} className="flex items-center gap-1.5">
@@ -201,7 +201,7 @@ export default function InventoryPage() {
 
       {/* Stock movements + Category */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <Card className="lg:col-span-2 border-border/60 shadow-sm">
+        <Card className="lg:col-span-2">
           <CardHeader className="pb-1 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -230,7 +230,7 @@ export default function InventoryPage() {
         </Card>
 
         {/* Category distribution */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <CardTitle className="text-sm font-semibold">By Category</CardTitle>
           </CardHeader>
@@ -261,7 +261,7 @@ export default function InventoryPage() {
 
       {/* Low stock alerts + Recent transfers */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-red-500" />
@@ -301,7 +301,7 @@ export default function InventoryPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <ArrowLeftRight className="h-4 w-4 text-teal-500" />

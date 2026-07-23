@@ -65,7 +65,7 @@ function monthLabel(m: string) {
 function SpendTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-lg border border-border/60 bg-white px-3 py-2 shadow-lg text-xs">
+    <div className="rounded-lg border bg-white px-3 py-2 shadow-lg text-xs">
       <p className="font-semibold text-muted-foreground mb-1">{label}</p>
       <p className="font-bold">{formatCurrency(payload[0].value)}</p>
     </div>
@@ -185,7 +185,7 @@ export default function ProcurementPage() {
 
         {/* Purchase Requests */}
         <Link href="/procurement/purchase-requests">
-          <div className="group flex flex-col rounded-xl border border-border/60 bg-white p-4 shadow-sm hover:border-purple-200 hover:shadow-md transition-all h-full">
+          <div className="group flex flex-col rounded-xl border bg-white p-4 shadow-sm hover:border-purple-200 hover:shadow-md transition-all h-full">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Requests</span>
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50">
@@ -202,7 +202,7 @@ export default function ProcurementPage() {
         <Link href="/procurement/approval-center">
           <div className={cn(
             'group flex flex-col rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-all h-full',
-            (d?.pendingApprovals ?? 0) > 0 ? 'border-amber-200 ring-1 ring-amber-100' : 'border-border/60',
+            (d?.pendingApprovals ?? 0) > 0 ? 'border-amber-200 ring-1 ring-amber-100' : ,
           )}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Approvals</span>
@@ -218,7 +218,7 @@ export default function ProcurementPage() {
 
         {/* Open POs */}
         <Link href="/procurement/purchase-orders">
-          <div className="group flex flex-col rounded-xl border border-border/60 bg-white p-4 shadow-sm hover:border-teal-200 hover:shadow-md transition-all h-full">
+          <div className="group flex flex-col rounded-xl border bg-white p-4 shadow-sm hover:border-teal-200 hover:shadow-md transition-all h-full">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Open POs</span>
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50">
@@ -232,7 +232,7 @@ export default function ProcurementPage() {
         </Link>
 
         {/* Monthly Spend */}
-        <div className="flex flex-col rounded-xl border border-border/60 bg-white p-4 shadow-sm h-full">
+        <div className="flex flex-col rounded-xl border bg-white p-4 shadow-sm h-full">
           <div className="flex items-center justify-between mb-3">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Monthly Spend</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50">
@@ -250,7 +250,7 @@ export default function ProcurementPage() {
         <Link href="/procurement/goods-receipt">
           <div className={cn(
             'group flex flex-col rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-all h-full',
-            (d?.overdueDeliveries ?? 0) > 0 ? 'border-red-200' : 'border-border/60',
+            (d?.overdueDeliveries ?? 0) > 0 ? 'border-red-200' : ,
           )}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Deliveries</span>
@@ -270,7 +270,7 @@ export default function ProcurementPage() {
         <Link href="/procurement/purchase-invoices">
           <div className={cn(
             'group flex flex-col rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-all h-full',
-            (d?.totalUnpaid ?? 0) > 0 ? 'border-red-200' : 'border-border/60',
+            (d?.totalUnpaid ?? 0) > 0 ? 'border-red-200' : ,
           )}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Supplier Bills</span>
@@ -293,7 +293,7 @@ export default function ProcurementPage() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
 
         {/* Spend Trend */}
-        <Card className="lg:col-span-2 border-border/60 shadow-sm">
+        <Card className="lg:col-span-2">
           <CardHeader className="pb-1 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -360,7 +360,7 @@ export default function ProcurementPage() {
         </Card>
 
         {/* Approval Center */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -422,7 +422,7 @@ export default function ProcurementPage() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
 
         {/* Procurement Pipeline Funnel */}
-        <Card className="lg:col-span-2 border-border/60 shadow-sm">
+        <Card className="lg:col-span-2">
           <CardHeader className="pb-2 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -486,7 +486,7 @@ export default function ProcurementPage() {
         </Card>
 
         {/* Supplier Performance */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -547,7 +547,7 @@ export default function ProcurementPage() {
       </div>
 
       {/* ── Section 7: Open POs Table ── */}
-      <Card className="border-border/60 shadow-sm">
+      <Card >
         <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-center justify-between">
           <CardTitle className="text-sm font-semibold flex items-center gap-2">
             <ShoppingCart className="h-4 w-4 text-teal-500" />
@@ -612,7 +612,7 @@ export default function ProcurementPage() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
 
         {/* Delivery Monitoring */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
@@ -664,7 +664,7 @@ export default function ProcurementPage() {
         </Card>
 
         {/* Recent Activity */}
-        <Card className="border-border/60 shadow-sm">
+        <Card >
           <CardHeader className="pb-2 pt-4 px-5">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">

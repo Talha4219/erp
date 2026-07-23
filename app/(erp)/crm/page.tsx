@@ -58,10 +58,10 @@ export default function CrmDashboard() {
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
         {quickLinks.map(({ href, label, icon: Icon }) => (
           <Link key={href} href={href}>
-            <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <Card className="cursor-pointer soft-card-hover">
               <CardContent className="flex flex-col items-center gap-1 p-3">
-                <Icon className="h-5 w-5 text-primary" />
-                <span className="text-xs font-medium">{label}</span>
+                <Icon className="h-5 w-5 text-[#3B82F6]" />
+                <span className="text-xs font-medium text-slate-700">{label}</span>
               </CardContent>
             </Card>
           </Link>

@@ -65,7 +65,7 @@ export default function FulfillmentDashboardPage() {
       {d && <KpiCards data={d} />}
 
       {/* Recent Orders */}
-      <Card className="border-border/60 shadow-sm">
+      <Card >
         <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-center justify-between">
           <CardTitle className="text-sm font-semibold flex items-center gap-2">
             <ClipboardList className="h-4 w-4 text-indigo-500" />
